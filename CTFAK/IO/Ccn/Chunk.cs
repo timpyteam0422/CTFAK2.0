@@ -122,7 +122,7 @@ public abstract class ListChunk<T> : ListChunk,ICollection<T> where T : DataLoad
 {
     public ListChunk()
     {
-        items = new List<DataLoader>(new List<T>());
+        items = new List<DataLoader>();
     }
     public override void Read(ByteReader reader)
     {

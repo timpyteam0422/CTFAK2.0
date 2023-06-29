@@ -86,7 +86,6 @@ public partial class MainWindow : Window
     public TreeViewItem CreateTreeEntryForDataLoader(DataLoader loader)
     {
         var treeViewItem = new TreeViewItem();
-        treeViewItem.Items.Add(new Button());
         treeViewItem.Header = "Unknown";
         treeViewItem.Tag = loader;
         if (loader is Chunk chk)
