@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
 
 namespace CTFAK.IO.CCN.Chunks;
@@ -25,7 +23,7 @@ public class GlobalValues : Chunk
         }
 
     }
-    
+
 
     public override void Write(ByteWriter writer)
     {

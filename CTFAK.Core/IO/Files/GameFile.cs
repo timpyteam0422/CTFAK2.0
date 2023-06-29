@@ -2,7 +2,7 @@
 
 namespace CTFAK.IO;
 
-public abstract class GameFile:FusionFile
+public abstract class GameFile : FusionFile
 {
     public GameData GameData { get; set; }
 }

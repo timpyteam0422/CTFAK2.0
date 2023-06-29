@@ -1,21 +1,18 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
-using System.Text;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
-using AvaloniaEdit.TextMate;
 using CTFAK.GUI.PluginSystem;
 using CTFAK.IO;
 using CTFAK.IO.CCN;
 using CTFAK.IO.CCN.Chunks;
 using CTFAK.IO.CCN.Chunks.Frame;
-using CTFAK.Memory;
 using CTFAK.Utils;
-using TextMateSharp.Grammars;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
+using System.Text;
 
 namespace CTFAK.GUI;
 
@@ -33,7 +30,7 @@ public partial class MainWindow : Window
             PluginPanel.Children.Clear();
             PluginPanel.Children.Add(plugin as UserControl);
         };
-        
+
     }
 
 
@@ -43,7 +40,7 @@ public partial class MainWindow : Window
         fileSelector.Show(this);
     }
 
-   
+
 
     protected override void OnLoaded()
     {
@@ -54,14 +51,14 @@ public partial class MainWindow : Window
 
             VersionText.Text = $"CTFAK build hash: {CTFAKCore.GetVersion()}";
             Directory.CreateDirectory("Plugins");
-            var files = Directory.GetFiles("Plugins","*.dll");
+            var files = Directory.GetFiles("Plugins", "*.dll");
             foreach (var file in files)
             {
                 var asm = Assembly.Load(File.ReadAllBytes(file));
                 var types = asm.GetTypes();
                 foreach (var type in types)
                 {
-                    if (type.GetInterface(typeof(IPlugin).FullName)!=null)
+                    if (type.GetInterface(typeof(IPlugin).FullName) != null)
                     {
                         try
                         {
@@ -71,27 +68,27 @@ public partial class MainWindow : Window
                             item.Tag = plugin;
                             PluginList.Items.Add(item);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
-                            Logger.LogError("Error while loading plugins: "+ex);
+                            Logger.LogError("Error while loading plugins: " + ex);
                         }
                     }
                 }
             }
-      
+
         }
-        
-        
+
+
     }
 
 
 
     public void StartLoadingGame(string path)
     {
-       
-        SetStatus("Loading...",0);
+
+        SetStatus("Loading...", 0);
         var backgroundWorker = new BackgroundWorker();
-        backgroundWorker.DoWork += (o,e) =>
+        backgroundWorker.DoWork += (o, e) =>
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -137,21 +134,21 @@ public partial class MainWindow : Window
                     {
                         var contextMenu = new ContextMenu();
                         var saveRaw = new TextBlock();
-                        
+
                         saveRaw.Text = "Save(Raw)";
                         saveRaw.PointerPressed += (o, e) =>
                         {
                             contextMenu.Close();
-                            
+
                         };
                         contextMenu.Items.Add(saveRaw);
-                        
+
                         var saveUncompressed = new TextBlock();
                         saveUncompressed.Text = "Save(Uncompressed)";
                         saveUncompressed.PointerPressed += (o, e) =>
                         {
                             contextMenu.Close();
-                            
+
                         };
                         contextMenu.Items.Add(saveUncompressed);
                         contextMenu.Placement = PlacementMode.Pointer;
@@ -162,7 +159,7 @@ public partial class MainWindow : Window
                 ChunkTree.Items.Add(treeViewItem);
             }
 
-            
+
         };
         backgroundWorker.RunWorkerAsync();
     }
@@ -170,7 +167,7 @@ public partial class MainWindow : Window
     public void DisplayChunk(Chunk chk)
     {
         ChunkDetails.Items.Clear();
-;
+        ;
         ChunkDetails.Items.Add(new TextBlock() { Text = $"Name: {ChunkList.GetChunkName(chk.Id)}" });
         ChunkDetails.Items.Add(new TextBlock() { Text = $"Loader: {chk?.GetType().Name ?? "None"}" });
         ChunkDetails.Items.Add(new TextBlock() { Text = $"Flag: {chk.Flag}" });
@@ -182,30 +179,30 @@ public partial class MainWindow : Window
 
         if (chk is StringChunk strChk)
         {
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Contents: {strChk.Value}", TextWrapping = TextWrapping.WrapWithOverflow});
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Contents: {strChk.Value}", TextWrapping = TextWrapping.WrapWithOverflow });
         }
         else if (chk is AppHeader hdrChk)
         {
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Screen Resolution: {hdrChk.WindowWidth}x{hdrChk.WindowHeight}", TextWrapping = TextWrapping.WrapWithOverflow});
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Initial Lives: {hdrChk.InitialLives}", TextWrapping = TextWrapping.WrapWithOverflow});
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Initial Score: {hdrChk.InitialScore}", TextWrapping = TextWrapping.WrapWithOverflow});
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Flags: {hdrChk.Flags}", TextWrapping = TextWrapping.WrapWithOverflow});
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"New flags: {hdrChk.NewFlags}", TextWrapping = TextWrapping.WrapWithOverflow});
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Other flags: {hdrChk.OtherFlags}", TextWrapping = TextWrapping.WrapWithOverflow});
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Screen Resolution: {hdrChk.WindowWidth}x{hdrChk.WindowHeight}", TextWrapping = TextWrapping.WrapWithOverflow });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Initial Lives: {hdrChk.InitialLives}", TextWrapping = TextWrapping.WrapWithOverflow });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Initial Score: {hdrChk.InitialScore}", TextWrapping = TextWrapping.WrapWithOverflow });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Flags: {hdrChk.Flags}", TextWrapping = TextWrapping.WrapWithOverflow });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"New flags: {hdrChk.NewFlags}", TextWrapping = TextWrapping.WrapWithOverflow });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Other flags: {hdrChk.OtherFlags}", TextWrapping = TextWrapping.WrapWithOverflow });
         }
         else if (chk is Frame frmChk)
         {
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Frame size: {frmChk.Width}x{frmChk.Height}", TextWrapping = TextWrapping.WrapWithOverflow});
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Flags: {frmChk.Flags}", TextWrapping = TextWrapping.WrapWithOverflow});
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Frame size: {frmChk.Width}x{frmChk.Height}", TextWrapping = TextWrapping.WrapWithOverflow });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Flags: {frmChk.Flags}", TextWrapping = TextWrapping.WrapWithOverflow });
 
         }
-        
+
     }
 
     private void DumpImages_Click(object? sender, RoutedEventArgs e)
     {
         var worker = new BackgroundWorker();
-        worker.DoWork += (o,e) =>
+        worker.DoWork += (o, e) =>
         {
             var game = CurrentFile.GameData;
             var imgs = game.Images.Items;
@@ -217,15 +214,15 @@ public partial class MainWindow : Window
             {
                 //img.Value.bitmap.Save(Path.Join(directory, $"{img.Key}.png"));
                 i++;
-                SetStatus($"Dumping images: {i}/{count}",  (int)(((float)i/(float)count)*100f));
+                SetStatus($"Dumping images: {i}/{count}", (int)((i / (float)count) * 100f));
             }
         };
         worker.RunWorkerCompleted += (o, e) =>
         {
-            SetStatus("Idle",0);
+            SetStatus("Idle", 0);
         };
         worker.RunWorkerAsync();
-        
+
     }
 
     public void SetStatus(string status, int progress)
@@ -240,7 +237,7 @@ public partial class MainWindow : Window
     private void DumpSounds_Click(object? sender, RoutedEventArgs e)
     {
         var worker = new BackgroundWorker();
-        worker.DoWork += (o,e) =>
+        worker.DoWork += (o, e) =>
         {
             var game = CurrentFile.GameData;
             var sounds = game.Sounds.Items;
@@ -250,14 +247,14 @@ public partial class MainWindow : Window
             int count = sounds.Count;
             foreach (var snd in sounds)
             {
-                File.WriteAllBytes(Path.Join(directory,Utils.Utils.ClearName(snd.Name)+((snd.Data[0]==0xff||snd.Data[0]==0x49) ? ".mp3":".wav")),snd.Data);
+                File.WriteAllBytes(Path.Join(directory, Utils.Utils.ClearName(snd.Name) + ((snd.Data[0] == 0xff || snd.Data[0] == 0x49) ? ".mp3" : ".wav")), snd.Data);
                 i++;
-                SetStatus($"Dumping sounds: {snd.Name}. ({i}/{count})",  (int)(((float)i/(float)count)*100f));
+                SetStatus($"Dumping sounds: {snd.Name}. ({i}/{count})", (int)((i / (float)count) * 100f));
             }
         };
         worker.RunWorkerCompleted += (o, e) =>
         {
-            SetStatus("Idle",0);
+            SetStatus("Idle", 0);
         };
         worker.RunWorkerAsync();
     }
@@ -269,7 +266,7 @@ public partial class MainWindow : Window
 
     private void DumpMfa_Click(object? sender, RoutedEventArgs e)
     {
-        
+
         var worker = new BackgroundWorker();
         worker.DoWork += (o, e) =>
         {
@@ -285,12 +282,12 @@ public partial class MainWindow : Window
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error while dumping MFA: "+ex);
+                Logger.LogError("Error while dumping MFA: " + ex);
             }
         };
         worker.RunWorkerCompleted += (o, e) =>
         {
-            SetStatus("Idle",0);
+            SetStatus("Idle", 0);
         };
         worker.RunWorkerAsync();
     }

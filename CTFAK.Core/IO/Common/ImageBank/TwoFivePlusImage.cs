@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using CTFAK.Memory;
-using CTFAK.Utils;
+﻿using CTFAK.Memory;
 using K4os.Compression.LZ4;
 
 namespace CTFAK.IO.Common.Banks.ImageBank;

@@ -1,10 +1,7 @@
-﻿using System.Reflection;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 namespace CTFAK.GUI;
 
 public partial class FileSelectorWindow : Window
@@ -22,7 +19,7 @@ public partial class FileSelectorWindow : Window
         {
 
         }
-        
+
 
     }
 
@@ -30,15 +27,15 @@ public partial class FileSelectorWindow : Window
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
 
     private async void SelectPath_OnClick(object? sender, RoutedEventArgs e)
     {
         var filters = new List<FilePickerFileType>();
-        filters.Add(new FilePickerFileType("Fusion Game"){Patterns = new string[]{"*.ccn","*.exe","*.dat"}});
-        var task = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions(){AllowMultiple = false, Title = "Select Fusion game", FileTypeFilter = filters});
+        filters.Add(new FilePickerFileType("Fusion Game") { Patterns = new string[] { "*.ccn", "*.exe", "*.dat" } });
+        var task = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions() { AllowMultiple = false, Title = "Select Fusion game", FileTypeFilter = filters });
 
-        FilePath.Text = task.Count>0 ? task[0].Path.LocalPath: string.Empty;
+        FilePath.Text = task.Count > 0 ? task[0].Path.LocalPath : string.Empty;
     }
 
     private void LoadFile_OnClick(object sender, RoutedEventArgs e)
@@ -51,7 +48,7 @@ public partial class FileSelectorWindow : Window
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
         //refreshSize();
-        
+
         AdvancedSettings.IsVisible = AdvancedCheckbox.IsChecked.Value;
         Console.WriteLine(AdvancedSettings.Height);
     }

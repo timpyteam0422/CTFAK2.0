@@ -1,8 +1,7 @@
 ﻿//#define USE_IONIC
 
-using System.IO;
-using System.Runtime.CompilerServices;
 using Joveler.Compression.ZLib;
+using System.Runtime.CompilerServices;
 //using Joveler.Compression.ZLib;
 
 namespace CTFAK.Memory;
@@ -123,7 +122,7 @@ public static class Decompressor
         decompressedStream.Close();
         decompressedStream.Dispose();
         zs.Close();
-        
+
         return compressedStream.ToArray();
     }
 }

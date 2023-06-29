@@ -1,11 +1,5 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using CTFAK.IO.CCN;
-using CTFAK.Memory;
-using CTFAK.Utils;
-using K4os.Compression.LZ4;
+﻿using CTFAK.Memory;
+using System.Drawing;
 
 namespace CTFAK.IO.Common.Banks.ImageBank;
 
@@ -54,7 +48,7 @@ public abstract class FusionImage : DataLoader
 
 
 
-    
+
     public override void Write(ByteWriter writer)
     {
         throw new NotImplementedException();

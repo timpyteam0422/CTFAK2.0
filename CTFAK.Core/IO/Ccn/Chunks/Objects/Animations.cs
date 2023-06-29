@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
 
 namespace CTFAK.IO.CCN.Chunks.Objects;
 
 public class Animations : DataLoader
 {
-    public Dictionary<int, Animation> AnimationDict= new Dictionary<int, Animation>();
+    public Dictionary<int, Animation> AnimationDict = new Dictionary<int, Animation>();
 
     public override void Read(ByteReader reader)
     {

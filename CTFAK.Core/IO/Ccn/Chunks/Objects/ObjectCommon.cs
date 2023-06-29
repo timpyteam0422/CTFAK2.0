@@ -1,7 +1,5 @@
-﻿using System;
+﻿using CTFAK.Memory;
 using System.Drawing;
-using CTFAK.Memory;
-using CTFAK.Utils;
 
 namespace CTFAK.IO.CCN.Chunks.Objects;
 
@@ -381,11 +379,11 @@ public class ObjectCommon : DataLoader
                     Counters = new Counters();
                     Counters.Read(reader);
                     break;
-                //Sub-Application
-                //case "CCA ":
-                //    SubApplication = new SubApplication();
-                //    SubApplication.Read(reader);
-                //   break;
+                    //Sub-Application
+                    //case "CCA ":
+                    //    SubApplication = new SubApplication();
+                    //    SubApplication.Read(reader);
+                    //   break;
             }
         }
 

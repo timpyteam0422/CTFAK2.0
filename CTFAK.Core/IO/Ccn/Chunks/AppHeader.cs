@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using System.Drawing;
 
 namespace CTFAK.IO.CCN.Chunks;
 
@@ -68,7 +65,7 @@ public class AppHeader : Chunk
         "Direct3D9or11",
         "Direct3D8or11"
     });
-    
+
     public int WindowWidth;
     public int WindowHeight;
     public int InitialScore;

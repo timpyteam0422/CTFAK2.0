@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CTFAK.IO.CCN;
-using CTFAK.IO.CCN.Chunks;
+﻿using CTFAK.IO.CCN.Chunks;
 using CTFAK.Memory;
 using CTFAK.Utils;
 
@@ -164,7 +160,7 @@ public class EventGroup : DataLoader
                                 newCondition.Items.Add(new Parameter { Code = 50, Loader = newParam });
                                 var exp = new ExpressionParameter { Comparsion = (short)val.op };
                                 exp.Items.Add(new Expression
-                                    { Loader = new LongExp { Value = (int)val.value }, ObjectType = -1 });
+                                { Loader = new LongExp { Value = (int)val.value }, ObjectType = -1 });
                                 newCondition.Items.Add(new Parameter { Code = 23, Loader = exp });
                                 Conditions.Add(newCondition);
                                 IdentifierCounter++;

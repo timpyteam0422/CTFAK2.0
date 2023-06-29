@@ -1,12 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using CTFAK.IO;
-using CTFAK.IO.CCN;
-using Joveler.Compression.ZLib;
-using Microsoft.VisualBasic;
+﻿using CTFAK.IO;
 
 namespace CTFAK;
 
@@ -35,10 +27,10 @@ public partial class CTFAKCore
     }
     public static string GetVersion()
     {
-        
+
         int a = (int)((CompileTime & 0xffffffff0000000));
         int b = (int)((CompileTime & 0x0000000ffffffff));
-        return (a^b).ToString("X");
+        return (a ^ b).ToString("X");
     }
 }
 
@@ -61,7 +53,7 @@ public class CTFAKContext
 
     public CTFAKContext() : this(LoadingOptions.Default)
     {
-        
+
     }
     public CTFAKContext(LoadingOptions loadOpts)
     {
@@ -82,7 +74,7 @@ public class CTFAKContext
 
     public bool Old { get; set; }
     public bool Mmf2 { get; set; }
-    
+
     public bool Unicode { get; set; }
     public bool TwoFivePlus { get; set; }
     public bool F3 { get; set; }

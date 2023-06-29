@@ -5,20 +5,20 @@ using Avalonia.Markup.Xaml;
 
 namespace CTFAK.GUI;
 
-    public class App : Application
+public class App : Application
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow = new MainWindow();
-            }
-
-            base.OnFrameworkInitializationCompleted();
-        }
+        AvaloniaXamlLoader.Load(this);
     }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = new MainWindow();
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}

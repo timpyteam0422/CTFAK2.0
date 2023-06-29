@@ -30,7 +30,7 @@ public class MFAExtensionObject : MFAAnimationObject
         var dataSize = newReader.ReadInt32() - 20;
         reader.ReadInt32();
         //Trace.Assert(reader.ReadInt32()==-1,"Extension magic is not equal to -1");
-        
+
         ExtensionVersion = newReader.ReadInt32();
         ExtensionId = newReader.ReadInt32();
         ExtensionPrivate = newReader.ReadInt32();

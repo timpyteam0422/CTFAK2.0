@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
+using System.Drawing;
 
 namespace CTFAK.IO.Common.Events;
 

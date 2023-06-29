@@ -1,12 +1,9 @@
 ﻿//#define SLIM
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using CTFAK.Attributes;
 using CTFAK.Memory;
 using CTFAK.Utils;
+using System.Reflection;
 
 namespace CTFAK.IO.CCN;
 
@@ -31,7 +28,7 @@ public class ChunkList
     public delegate void OnChunkLoadedEvent(int chunkId, Chunk loader);
 
     public delegate void HandleChunkEvent(int chunkId, Chunk loader);
-    
+
 
     public event OnChunkLoadedEvent OnChunkLoaded;
 
@@ -47,7 +44,7 @@ public class ChunkList
 
     public ChunkList()
     {
-        
+
     }
     public static Chunk CreateChunk(int id)
     {
@@ -198,8 +195,8 @@ return $"Unknown-{id}";
             chk.Write(writer);
         }
     }
-    
-    
+
+
     public static readonly Dictionary<int, string> ChunkNames = new()
     {
         { 4386, "Preview" },

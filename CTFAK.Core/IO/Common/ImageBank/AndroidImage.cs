@@ -1,5 +1,4 @@
 ﻿using CTFAK.Memory;
-using CTFAK.Utils;
 
 namespace CTFAK.IO.Common.Banks.ImageBank;
 

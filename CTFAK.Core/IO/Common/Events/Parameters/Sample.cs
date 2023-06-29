@@ -1,6 +1,4 @@
-﻿using CTFAK.IO.Common.Banks.SoundBank;
-using CTFAK.Memory;
-using CTFAK.Utils;
+﻿using CTFAK.Memory;
 
 namespace CTFAK.IO.Common.Events;
 

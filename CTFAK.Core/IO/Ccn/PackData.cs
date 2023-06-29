@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
 using CTFAK.Utils;
+using System.Diagnostics;
 
 namespace CTFAK.IO.EXE;
 
-public class PackData:DataLoader
+public class PackData : DataLoader
 {
     public uint FormatVersion;
     public List<PackFile> Items = new();
@@ -36,7 +35,7 @@ public class PackData:DataLoader
         FormatVersion = reader.ReadUInt32();
         Logger.Log($"PackData version: {FormatVersion}");
         reader.ReadInt32();
-        
+
         var check = reader.ReadInt32();
         Debug.Assert(check == 0);
 
@@ -86,6 +85,6 @@ public class PackFile
         _bingo = exeReader.ReadInt32();
         Data = exeReader.ReadBytes(exeReader.ReadInt32());
         Logger.Log($"New PackFile: Name - <color=lightblue>{PackFilename}</color>; Data size - {Data.Length}");
-        
+
     }
 }

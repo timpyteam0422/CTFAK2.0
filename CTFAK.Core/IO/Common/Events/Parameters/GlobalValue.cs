@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CTFAK.IO.Common.Events;
+﻿namespace CTFAK.IO.Common.Events;
 
 internal class GlobalValue : Short
 {

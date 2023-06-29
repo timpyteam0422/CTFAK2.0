@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using CTFAK.IO.CCN;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
 
 namespace CTFAK.IO.MFA;
 

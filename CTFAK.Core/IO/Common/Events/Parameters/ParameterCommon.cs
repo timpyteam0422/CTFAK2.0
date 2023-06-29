@@ -1,6 +1,4 @@
-﻿using System;
-using CTFAK.IO.CCN;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
 
 namespace CTFAK.IO.Common.Events;
 

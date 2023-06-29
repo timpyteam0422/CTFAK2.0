@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <None Update="x64\zlibwapi.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

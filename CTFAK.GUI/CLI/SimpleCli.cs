@@ -148,52 +148,52 @@ namespace SimpleCLI
     }
     public class CliControl
     {
-        public List<CliControl> children = new List<CliControl>(); 
+        public List<CliControl> children = new List<CliControl>();
         public virtual bool IsSelectable => false;
         public virtual bool HandlesSelection => false;
-        public virtual void Draw(ref int x,ref int y)
+        public virtual void Draw(ref int x, ref int y)
         {
         }
 
         public bool IsSelected;
         public virtual void OnSelected()
         {
-        
+
         }
 
         public virtual void OnActivated(ConsoleKey key)
         {
-        
+
         }
     }
 }
 
 namespace SimpleCLI.Controls
 {
-    public class CliButton:CliControl
+    public class CliButton : CliControl
     {
         public string Text;
         public Action<ConsoleKey> Activated;
         public bool activateWithAny;
 
-        public CliButton(string txt,Action act)
+        public CliButton(string txt, Action act)
         {
             Text = txt;
-            Activated = (key)=>{act.Invoke();};
+            Activated = (key) => { act.Invoke(); };
             activateWithAny = false;
         }
-        public CliButton(string txt,Action<ConsoleKey> act)
+        public CliButton(string txt, Action<ConsoleKey> act)
         {
             Text = txt;
             Activated = act;
             activateWithAny = true;
         }
-    
+
         public override bool IsSelectable => true;
 
         public override void Draw(ref int x, ref int y)
         {
-            Console.SetCursorPosition(x,y);
+            Console.SetCursorPosition(x, y);
             Console.BackgroundColor = ConsoleColor.Black;
             if (IsSelected)
             {
@@ -202,8 +202,8 @@ namespace SimpleCLI.Controls
             }
             Console.Write($"[{Text}]");
             Console.BackgroundColor = ConsoleColor.White;
-            if(CliWindow.horizontalLayout)
-                x += Text.Length+3;
+            if (CliWindow.horizontalLayout)
+                x += Text.Length + 3;
             else y += 1;
         }
 
@@ -211,11 +211,11 @@ namespace SimpleCLI.Controls
         {
             if (activateWithAny)
                 Activated.Invoke(key);
-            else if (key == ConsoleKey.Enter) 
+            else if (key == ConsoleKey.Enter)
                 Activated.Invoke(key);
         }
     }
-    public class CliCheckbox:CliControl
+    public class CliCheckbox : CliControl
     {
         public string Text;
         public bool Activated;
@@ -230,14 +230,14 @@ namespace SimpleCLI.Controls
 
         public override void Draw(ref int x, ref int y)
         {
-            Console.SetCursorPosition(x,y);
+            Console.SetCursorPosition(x, y);
             if (IsSelected)
             {
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
             }
-            Console.Write($"{(Activated ? "√":" ")} {Text}");
-            if(CliWindow.horizontalLayout)
+            Console.Write($"{(Activated ? "√" : " ")} {Text}");
+            if (CliWindow.horizontalLayout)
                 x += Text.Length;
             else y += 1;
         }
@@ -247,18 +247,18 @@ namespace SimpleCLI.Controls
             Activated = !Activated;
         }
     }
-    public class HorizontalLayout:CliControl
+    public class HorizontalLayout : CliControl
     {
         public override bool HandlesSelection => true;
-    
+
         public override void Draw(ref int x, ref int y)
         {
             CliWindow.horizontalLayout = true;
-        
-        
+
+
         }
     }
-    public class VerticalLayout:CliControl
+    public class VerticalLayout : CliControl
     {
         public override bool HandlesSelection => true;
 
@@ -267,7 +267,7 @@ namespace SimpleCLI.Controls
             CliWindow.horizontalLayout = false;
         }
     }
-    public class CliSeparator:CliControl
+    public class CliSeparator : CliControl
     {
         public int Dist;
 
@@ -284,25 +284,25 @@ namespace SimpleCLI.Controls
             else y += Dist;
         }
     }
-    public class CliLabel:CliControl
+    public class CliLabel : CliControl
     {
         public string Text;
 
         public ConsoleColor Color;
 
-        public CliLabel(string txt,ConsoleColor color = ConsoleColor.White)
+        public CliLabel(string txt, ConsoleColor color = ConsoleColor.White)
         {
             Color = color;
             Text = txt;
         }
         public override void Draw(ref int x, ref int y)
         {
-            Console.SetCursorPosition(x,y);
+            Console.SetCursorPosition(x, y);
             Console.ForegroundColor = Color;
             Console.Write(Text);
             Console.ForegroundColor = ConsoleColor.White;
-            if(CliWindow.horizontalLayout)
-                x += Text.Length+1;
+            if (CliWindow.horizontalLayout)
+                x += Text.Length + 1;
             else y += Text.Split('\n').Length;
         }
     }

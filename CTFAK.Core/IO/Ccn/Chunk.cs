@@ -8,23 +8,23 @@ public class UnknownChunk : Chunk
 {
     public override void Read(ByteReader reader)
     {
-        
+
     }
 
     public override void Write(ByteWriter writer)
     {
     }
 }
-public abstract class Chunk:DataLoader
+public abstract class Chunk : DataLoader
 {
     public UInt16 Id { get; set; }
 
     public ChunkFlags Flag { get; set; }
-    
+
     public int FileOffset { get; private set; }
     public int FileSize { get; private set; }
     public int UnpackedSize { get; private set; }
-    
+
     public byte[] ReadHeader(ByteReader reader)
     {
         FileOffset = (int)reader.Tell();
@@ -57,15 +57,15 @@ public abstract class Chunk:DataLoader
 
     public void ReadAndLoad(ByteReader reader)
     {
-       var dataReader = new ByteReader(ReadHeader(reader));
-       Read(dataReader);
+        var dataReader = new ByteReader(ReadHeader(reader));
+        Read(dataReader);
     }
 
     public void CompressAndWrite(ByteWriter writer)
     {
         var dataWriter = new ByteWriter(new MemoryStream());
         Write(dataWriter);
-        
+
     }
 }
 
@@ -76,6 +76,6 @@ public abstract class ChildChunk : Chunk
 
 public abstract class ChildChunk<T> : ChildChunk
 {
-    public T Parent=>(T)(object)parent;
-    
+    public T Parent => (T)(object)parent;
+
 }

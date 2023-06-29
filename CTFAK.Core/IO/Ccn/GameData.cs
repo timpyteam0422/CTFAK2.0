@@ -10,7 +10,7 @@ using CTFAK.Utils;
 
 namespace CTFAK.IO.CCN;
 
-public class GameData:DataLoader
+public class GameData : DataLoader
 {
     public AppHeader Header;
     public string Name;
@@ -37,12 +37,12 @@ public class GameData:DataLoader
     public FontBank Fonts;
     public SoundBank Sounds;
     public MusicBank Music;
-    
-    
+
+
 
     public string Doc;
-    
-    
+
+
 
     public PackData PackData; //read-only. not actually stored in gamedata structure
     public int productBuild;
@@ -60,7 +60,7 @@ public class GameData:DataLoader
 
     public override void Read(ByteReader reader)
     {
-        
+
         Logger.Log("<color=green>Reading GameData</color>");
         var magic = reader.ReadAscii(4);
 
@@ -70,10 +70,10 @@ public class GameData:DataLoader
         else if (magic == "PAME")
             Context.Unicode = false;
         //else if (magic == "CRUF")
-       //     Settings.gameType |= Settings.GameType.F3;
+        //     Settings.gameType |= Settings.GameType.F3;
         else Logger.LogWarning("Couldn't found any known headers: " + magic);
 
-        
+
 
         runtimeVersion = reader.ReadInt16();
         runtimeSubversion = reader.ReadInt16();
@@ -225,6 +225,6 @@ public class GameData:DataLoader
 
     public override void Write(ByteWriter writer)
     {
-        
+
     }
 }

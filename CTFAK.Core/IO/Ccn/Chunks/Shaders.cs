@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
 
 namespace CTFAK.IO.CCN.Chunks;

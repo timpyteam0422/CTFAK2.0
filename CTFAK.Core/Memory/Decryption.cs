@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CTFAK.Utils;
-
-namespace CTFAK.Memory;
+﻿namespace CTFAK.Memory;
 
 public static class Decryption
 {
@@ -58,16 +53,16 @@ public static class Decryption
     }
 
 
-    public static byte[] DecodeMode3(byte[] chunkData, int chunkId, out int decompressed,byte[] decodeBuffer)
+    public static byte[] DecodeMode3(byte[] chunkData, int chunkId, out int decompressed, byte[] decodeBuffer)
     {
         var reader = new ByteReader(chunkData);
         var decompressedSize = reader.ReadUInt32();
 
         var rawData = reader.ReadBytes((int)reader.Size());
 
-        if ((chunkId & 1) == 1 && CTFAKContext.Current.BuildNumber> 284)
+        if ((chunkId & 1) == 1 && CTFAKContext.Current.BuildNumber > 284)
             rawData[0] ^= (byte)((byte)(chunkId & 0xFF) ^ (byte)(chunkId >> 0x8));
-        TransformChunk(rawData,decodeBuffer);
+        TransformChunk(rawData, decodeBuffer);
 
         using (var data = new ByteReader(rawData))
         {
@@ -77,7 +72,7 @@ public static class Decryption
         }
     }
 
-    public static byte[] EncryptAndCompressMode3(byte[] chunkData, int chunkId,byte[] decodeBuffer)
+    public static byte[] EncryptAndCompressMode3(byte[] chunkData, int chunkId, byte[] decodeBuffer)
     {
         var compressedData = Decompressor.CompressBlock(chunkData);
         var decryptedWriter = new ByteWriter(new MemoryStream());
@@ -85,7 +80,7 @@ public static class Decryption
 
         decryptedWriter.WriteBytes(compressedData);
         var encryptedData = decryptedWriter.ToArray();
-        TransformChunk(encryptedData,decodeBuffer);
+        TransformChunk(encryptedData, decodeBuffer);
         var anotherWriter = new ByteWriter(new MemoryStream());
         anotherWriter.WriteInt32(encryptedData.Length - 12);
         anotherWriter.WriteBytes(encryptedData);
@@ -146,7 +141,7 @@ public static class Decryption
         return decodeBuffer;
     }
 
-    public static bool TransformChunk(byte[] chunk,byte[] decodeBuffer)
+    public static bool TransformChunk(byte[] chunk, byte[] decodeBuffer)
     {
         var tempBuf = new byte[256];
         Array.Copy(decodeBuffer, tempBuf, 256);

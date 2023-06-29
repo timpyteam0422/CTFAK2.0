@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using CTFAK.IO.CCN;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
 using CTFAK.Utils;
+using System.Drawing;
 
 namespace CTFAK.IO.MFA;
 
@@ -67,12 +64,12 @@ public class MFAChunkList : DataLoader //This is used for MFA reading/writing
     }
 }
 
-public class MFAChunk:DataLoader
+public class MFAChunk : DataLoader
 {
     public byte[] Data;
     public byte Id;
     public MFAChunkLoader Loader;
-    
+
 
     public override void Read(ByteReader reader)
     {

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CTFAK.Memory;
 using System.Drawing;
-using CTFAK.IO.CCN;
-using CTFAK.Memory;
 
 namespace CTFAK.IO.MFA.MFAObjectLoaders;
 
@@ -11,7 +9,7 @@ public class MFAText : ObjectLoader
     public uint Flags;
     public uint Font;
     public uint Height;
-    public List<MFAParagraph> Items= new List<MFAParagraph>();
+    public List<MFAParagraph> Items = new List<MFAParagraph>();
     public uint Width;
 
     public override void Read(ByteReader reader)

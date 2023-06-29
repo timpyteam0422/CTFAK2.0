@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
 using CTFAK.Utils;
 
 namespace CTFAK.IO.CCN.Chunks.Objects;
@@ -85,7 +82,7 @@ public class Movement : DataLoader
 
             if (Loader == null && Type != 0)
             {
-                Logger.LogWarning("Unknown movement type: "+Type);
+                Logger.LogWarning("Unknown movement type: " + Type);
                 return;
             }
             Loader?.Read(reader);
@@ -130,7 +127,7 @@ public class Movement : DataLoader
 
             if (Loader == null && Type != 0)
             {
-                Logger.LogWarning("Unknown movement type: "+Type);
+                Logger.LogWarning("Unknown movement type: " + Type);
                 return;
             }
             Loader?.Read(reader);

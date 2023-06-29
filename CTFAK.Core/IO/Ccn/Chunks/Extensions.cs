@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
 
 namespace CTFAK.IO.CCN.Chunks;
@@ -42,7 +40,7 @@ public class Extension : DataLoader
     public string Name = "";
     public string Ext;
     public string SubType = "";
-    
+
     public override void Read(ByteReader reader)
     {
         var currentPosition = reader.Tell();

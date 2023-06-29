@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CTFAK.IO.CCN;
-using CTFAK.IO.Common.Events;
+﻿using CTFAK.IO.Common.Events;
 using CTFAK.Memory;
 using CTFAK.Utils;
 
@@ -10,7 +6,7 @@ namespace CTFAK.IO.MFA;
 
 public class MFAEvents : DataLoader
 {
-    
+
     //TODO Clean this up. I'm too lazy to do it rn
     public const string EventData = "Evts";
     public const string CommentData = "Rems";

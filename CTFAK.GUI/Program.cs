@@ -1,21 +1,19 @@
-﻿using System.Text;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia;
 using CommandLine;
 
 namespace CTFAK.GUI;
 public class Program
 {
-    class Options
+    private class Options
     {
-        [Option(Required = false,HelpText = "Run CTFAK in CLI mode")]
+        [Option(Required = false, HelpText = "Run CTFAK in CLI mode")]
         public bool Cli { get; set; }
     }
     public static bool IsCli;
 
     [STAThread]
     public static void Main(string[] args)
-    { 
+    {
         CommandLine.Parser.Default.ParseArguments<Options>(args).WithParsed(ArgsParsed).WithNotParsed(ArgsNotParsed);
     }
 

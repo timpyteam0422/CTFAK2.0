@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
-using CTFAK.Utils;
-using Microsoft.VisualBasic;
+using System.Drawing;
 
 namespace CTFAK.IO.CCN.Chunks.Objects;
 
@@ -24,12 +19,12 @@ public class ShaderData
     public int ShaderHandle;
 }
 
-[ChunkLoader(17477,"ObjectName")]
+[ChunkLoader(17477, "ObjectName")]
 public class ObjectName : StringChunk
 {
 }
 
-[ChunkLoader(17476,"ObjectHeader")]
+[ChunkLoader(17476, "ObjectHeader")]
 public class ObjectHeader : ChildChunk<ObjectInfo>
 {
     public short Handle;
@@ -75,7 +70,7 @@ public class ObjectHeader : ChildChunk<ObjectInfo>
         throw new NotImplementedException();
     }
 }
-[ChunkLoader(17478,"ObjectProperties")]
+[ChunkLoader(17478, "ObjectProperties")]
 public class ObjectProperties : ChildChunk<ObjectInfo>
 {
     public DataLoader Properties;
@@ -95,7 +90,7 @@ public class ObjectProperties : ChildChunk<ObjectInfo>
         throw new NotImplementedException();
     }
 }
-[ChunkLoader(17480,"ObjectEffects")]
+[ChunkLoader(17480, "ObjectEffects")]
 public class ObjectEffects : ChildChunk<ObjectInfo>
 {
     public string Name;
@@ -166,7 +161,7 @@ public class ObjectInfo : DataLoader
     public ObjectTypes ObjectType
     {
         get => _header.ObjectType;
-        set => _header.ObjectType=value;
+        set => _header.ObjectType = value;
     }
 
     public ShaderData ShaderData = new();
@@ -179,13 +174,13 @@ public class ObjectInfo : DataLoader
             switch (id)
             {
                 case 17476:
-                    _header=(ObjectHeader)loader;
+                    _header = (ObjectHeader)loader;
                     break;
                 case 17477:
-                    _name=(ObjectName)loader;
+                    _name = (ObjectName)loader;
                     break;
             }
-                
+
         };
         Chunks.Read(reader);
 

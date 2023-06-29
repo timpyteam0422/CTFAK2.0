@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.IO.Common.Events;
 using CTFAK.Memory;
 using CTFAK.Utils;
+using System.Drawing;
 
 namespace CTFAK.IO.CCN.Chunks.Frame;
 
@@ -38,7 +36,7 @@ public class ObjectInstance : DataLoader
         if (!Context.F3)
         {
             ParentType = reader.ReadInt16();
-            ParentHandle = reader.ReadInt16(); 
+            ParentHandle = reader.ReadInt16();
         }
         if (Context.Old) return;
         Layer = reader.ReadInt16();
@@ -50,7 +48,7 @@ public class ObjectInstance : DataLoader
         throw new NotImplementedException();
     }
 }
-[ChunkLoader(13122,"FrameVirtualRect")]
+[ChunkLoader(13122, "FrameVirtualRect")]
 public class VirtualRect : Chunk
 {
     public int Bottom;
@@ -71,11 +69,11 @@ public class VirtualRect : Chunk
         throw new NotImplementedException();
     }
 }
-[ChunkLoader(13109,"FrameName")]
+[ChunkLoader(13109, "FrameName")]
 public class FrameName : StringChunk
 {
 }
-[ChunkLoader(13108,"FrameHeader")]
+[ChunkLoader(13108, "FrameHeader")]
 public class FrameHeader : ChildChunk<Frame>
 {
     public int Width;
@@ -94,7 +92,7 @@ public class FrameHeader : ChildChunk<Frame>
         "ToHide",
         "ToShow"
     });
-    
+
     public override void Read(ByteReader reader)
     {
         if (Context.Old)
@@ -119,7 +117,7 @@ public class FrameHeader : ChildChunk<Frame>
     }
 }
 
-[ChunkLoader(13112,"FrameObjectInstances")]
+[ChunkLoader(13112, "FrameObjectInstances")]
 public class FrameObjectInstances : ChildChunk<Frame>
 {
     public List<ObjectInstance> Objects = new();
@@ -140,11 +138,11 @@ public class FrameObjectInstances : ChildChunk<Frame>
     }
 }
 
-[ChunkLoader(13116,"FrameFadeOut")]
+[ChunkLoader(13116, "FrameFadeOut")]
 public class FrameFadeOut : Transition
 {
 }
-[ChunkLoader(13115,"FrameFadeIn")]
+[ChunkLoader(13115, "FrameFadeIn")]
 public class FrameFadeIn : Transition
 {
 }
@@ -197,7 +195,7 @@ public class Transition : Chunk
         writer.Seek(end);
     }
 }
-[ChunkLoader(13117,"FrameEvents")]
+[ChunkLoader(13117, "FrameEvents")]
 public class Events : Chunk
 {
     public readonly string End = "<<ER";
@@ -351,7 +349,7 @@ public class Frame : Chunk
     }
 }
 
-[ChunkLoader(13121,"FrameLayers")]
+[ChunkLoader(13121, "FrameLayers")]
 public class Layers : Chunk
 {
     public List<Layer> Items;
@@ -377,7 +375,7 @@ public class Layers : Chunk
 
 public class Layer : DataLoader
 {
-   
+
 
     public BitDict Flags = new(new[]
     {
@@ -402,11 +400,11 @@ public class Layer : DataLoader
 
     public int InkEffect;
     public int InkEffectValue;
-    
+
     public Color RgbCoeff;
     public ShaderData ShaderData = new();
 
-    
+
     public byte Blend;
     public override void Read(ByteReader reader)
     {
@@ -433,7 +431,7 @@ public class Layer : DataLoader
         writer.WriteUnicode(Name);
     }
 }
-[ChunkLoader(13111,"FramePalette")]
+[ChunkLoader(13111, "FramePalette")]
 public class FramePalette : Chunk
 {
     public List<Color> Items;

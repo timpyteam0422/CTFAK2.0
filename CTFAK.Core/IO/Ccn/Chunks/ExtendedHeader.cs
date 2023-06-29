@@ -1,6 +1,5 @@
 ﻿using CTFAK.Attributes;
 using CTFAK.Memory;
-using Microsoft.VisualBasic;
 
 namespace CTFAK.IO.CCN.Chunks;
 

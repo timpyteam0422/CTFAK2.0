@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using CTFAK.IO.CCN;
-using CTFAK.IO.CCN.Chunks.Objects;
+﻿using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.Memory;
 
 namespace CTFAK.IO.MFA.MFAObjectLoaders;
@@ -40,7 +37,7 @@ public class MFAMovement : DataLoader
     public MovementLoader Loader;
 
     public byte[] extData = new byte[14];
-    
+
 
     public override void Write(ByteWriter writer)
     {

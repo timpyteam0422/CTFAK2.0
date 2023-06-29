@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using CTFAK.Attributes;
-using CTFAK.IO.CCN;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
-using CTFAK.Utils;
 
 namespace CTFAK.IO.Common.Banks.SoundBank;
 

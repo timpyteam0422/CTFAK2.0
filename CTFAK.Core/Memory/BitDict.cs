@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CTFAK.Memory;
+﻿namespace CTFAK.Memory;
 
 public static class ByteFlag
 {

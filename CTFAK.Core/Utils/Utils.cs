@@ -12,7 +12,7 @@ public static class Utils
             order++;
             len = len / 1024;
         }
-        
+
         var result = string.Format("{0:0.##} {1}", len, sizes[order]);
         return result;
     }

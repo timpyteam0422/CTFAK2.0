@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.Memory;
 

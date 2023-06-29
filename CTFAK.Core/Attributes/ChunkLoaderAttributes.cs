@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CTFAK.Attributes;
+﻿namespace CTFAK.Attributes;
 
 
 ///<summary>
@@ -11,7 +9,7 @@ public class ChunkLoaderAttribute : Attribute
 {
     public short ChunkId;
     public string ChunkName;
-   
+
     public ChunkLoaderAttribute(short chunkId, string chunkName)
     {
         ChunkId = chunkId;

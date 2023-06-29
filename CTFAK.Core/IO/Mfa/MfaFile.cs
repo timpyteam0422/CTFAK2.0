@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using CTFAK.IO.CCN.Chunks;
+﻿using CTFAK.IO.CCN.Chunks;
 using CTFAK.IO.Common.Banks;
 using CTFAK.IO.Common.Banks.SoundBank;
 using CTFAK.Memory;
-using CTFAK.Utils;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace CTFAK.IO.MFA;
 
-public class MfaFile:FusionFile
+public class MfaFile : FusionFile
 {
-    
+
     public const string FontBankId = "ATNF";
     public const string ImageBankId = "AGMI";
     public const string MusicBankId = "ASUM";
@@ -39,7 +35,7 @@ public class MfaFile:FusionFile
     public int WindowX;
     public int WindowY;
     public Color BorderColor;
-    
+
     public BitDict DisplayFlags = new(new[]
     {
         "MaximizedOnBoot",
@@ -128,7 +124,7 @@ public class MfaFile:FusionFile
     public AppMenu Menu;
     public int _windowMenuIndex;
     public Dictionary<int, int> MenuImages = new Dictionary<int, int>();
-    public MFAValueList GlobalValues= new MFAValueList();
+    public MFAValueList GlobalValues = new MFAValueList();
     public MFAValueList GlobalStrings = new MFAValueList();
     public byte[] GlobalEvents = new byte[0];
     public int GraphicMode;
@@ -138,21 +134,21 @@ public class MfaFile:FusionFile
     public List<MFAFrame> Frames = new();
     public MFAChunkList Chunks = new();
 
-    
-    
-
-
-
-    
 
 
 
 
-    
 
-    
 
-    
+
+
+
+
+
+
+
+
+
 
     public override void Write(ByteWriter writer)
     {

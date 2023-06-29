@@ -5,7 +5,7 @@ using CTFAK.Utils;
 
 namespace CTFAK.IO.Exe;
 
-public class ExeFile:GameFile
+public class ExeFile : GameFile
 {
     public PackData PackData { get; set; }
     public void ReadPeHeader(ByteReader reader)

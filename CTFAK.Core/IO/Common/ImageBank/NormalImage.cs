@@ -1,7 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using CTFAK.Memory;
-using CTFAK.Utils;
+﻿using CTFAK.Memory;
+using System.Runtime.CompilerServices;
 
 namespace CTFAK.IO.Common.Banks.ImageBank;
 
@@ -19,7 +17,7 @@ public class NormalImage : FusionImage
         var compressedBuffer = reader.ReadBytes(compSize);
         var task = new Task(() =>
         {
-            
+
             using (var decompressedReader = new ByteReader(Decompressor.DecompressBlock(compressedBuffer)))
             {
                 Checksum = decompressedReader.ReadInt32();
@@ -46,8 +44,8 @@ public class NormalImage : FusionImage
                     ImageData = decompressedReader.ReadBytes(dataSize);
                 }
             }
-            
-            
+
+
         });
         task.Start();
         //task.RunSynchronously();

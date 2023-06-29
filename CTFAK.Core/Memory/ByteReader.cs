@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
+﻿using System.Drawing;
 using System.Text;
 
 namespace CTFAK.Memory;
@@ -48,8 +46,8 @@ public class ByteReader : BinaryReader
     {
         return Size() - Tell() >= size;
     }
-    public bool EndOfStream=>Size() - Tell() == 0;
-    
+    public bool EndOfStream => Size() - Tell() == 0;
+
     public ushort PeekUInt16()
     {
         var value = ReadUInt16();

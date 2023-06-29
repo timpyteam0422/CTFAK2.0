@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CTFAK.Attributes;
-using CTFAK.IO.CCN;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
-using CTFAK.Utils;
 
 namespace CTFAK.IO.Common.Banks.ImageBank;
 
@@ -16,7 +11,7 @@ public class ImageBank : Chunk
     public static List<Task> imageReadingTasks = new();
 
     public static List<Task> imageWritingTasks = new();
-    
+
     public static event SaveHandler OnImageLoaded;
 
 
@@ -57,7 +52,7 @@ public class ImageBank : Chunk
             OnImageLoaded?.Invoke(i, count);
             Items.Add(newImg.Handle, newImg);
         }
-        
+
         foreach (var task in imageReadingTasks) task.Wait();
         imageReadingTasks.Clear();
     }

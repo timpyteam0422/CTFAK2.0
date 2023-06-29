@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using CTFAK.Attributes;
+﻿using CTFAK.Attributes;
 using CTFAK.Memory;
-using CTFAK.Utils;
 
 namespace CTFAK.IO.CCN.Chunks;
 
@@ -78,9 +75,9 @@ public class AppMenu : Chunk
             newItem.Read(reader);
             Items.Add(newItem);
 
-            if (ByteFlag.GetFlag((uint)newItem.Flags, 4)) Load(reader);
+            if (ByteFlag.GetFlag(newItem.Flags, 4)) Load(reader);
 
-            if (ByteFlag.GetFlag((uint)newItem.Flags, 7)) break;
+            if (ByteFlag.GetFlag(newItem.Flags, 7)) break;
         }
     }
 }
@@ -100,8 +97,8 @@ public class AppMenuItem : DataLoader
     public override void Write(ByteWriter writer)
     {
         writer.WriteUInt16(Flags);
-        if (!ByteFlag.GetFlag((uint)Flags, 4)) writer.WriteInt16(Id);
-        
+        if (!ByteFlag.GetFlag(Flags, 4)) writer.WriteInt16(Id);
+
         writer.WriteUnicode(Name, true);
     }
 }
