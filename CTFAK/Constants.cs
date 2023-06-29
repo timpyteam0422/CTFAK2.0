@@ -49,7 +49,7 @@ public enum ValueType
     Double = 2
 }
 
-public enum FusionBuildType
+public enum FusionBuildType:byte
 {
     WindowsExe = 0,
     WindowsScreenSaver = 1,

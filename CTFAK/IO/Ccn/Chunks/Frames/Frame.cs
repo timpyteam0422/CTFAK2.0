@@ -333,9 +333,13 @@ public class Frame : Chunk
                 case 13114:
                     _fadeOut = (Transition)loader;
                     break;
+                case 13117:
+                    _events = (Events)loader;
+                    break;
                 case 13121:
                     _layers = (Layers)loader;
                     break;
+                
             }
         };
         Chunks.Read(reader);

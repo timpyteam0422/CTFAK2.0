@@ -1,6 +1,7 @@
 ﻿using CTFAK.Attributes;
 using CTFAK.Memory;
 using System.Drawing;
+using System.Runtime.InteropServices.JavaScript;
 
 namespace CTFAK.IO.CCN.Chunks;
 
@@ -66,8 +67,8 @@ public class AppHeader : Chunk
         "Direct3D8or11"
     });
 
-    public int WindowWidth;
-    public int WindowHeight;
+    public short WindowWidth;
+    public short WindowHeight;
     public int InitialScore;
     public int InitialLives;
     public Controls Controls;
@@ -103,7 +104,21 @@ public class AppHeader : Chunk
 
     public override void Write(ByteWriter writer)
     {
-        throw new NotImplementedException();
+        var dataWriter = new ByteWriter(new MemoryStream());
+        dataWriter.WriteUInt16((ushort)Flags.Flag);
+        dataWriter.WriteUInt16((ushort)NewFlags.Flag);
+        dataWriter.WriteInt16(GraphicsMode);
+        dataWriter.WriteInt16((short)OtherFlags.Flag);
+        dataWriter.WriteInt16(WindowWidth);
+        dataWriter.WriteInt16(WindowHeight);
+        dataWriter.WriteInt32((int)(InitialScore^0xffffffff));
+        dataWriter.WriteInt32((int)(InitialLives^0xffffffff));
+        Controls.Write(dataWriter);
+        dataWriter.WriteColor(BorderColor);
+        dataWriter.WriteInt32(NumberOfFrames);
+        dataWriter.WriteInt32(WindowsMenuIndex);
+        writer.WriteInt32((int)dataWriter.Tell());
+        writer.WriteWriter(dataWriter);
     }
 }
 

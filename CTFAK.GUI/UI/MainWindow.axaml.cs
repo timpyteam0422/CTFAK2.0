@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using CTFAK.IO.Common.Banks.SoundBank;
 
 namespace CTFAK.GUI;
 
@@ -62,7 +63,7 @@ public partial class MainWindow : Window
                     {
                         try
                         {
-                            IPlugin plugin = Activator.CreateInstance(type) as IPlugin;
+                            IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
                             var item = new TextBlock();
                             item.Text = plugin.Name;
                             item.Tag = plugin;
@@ -82,7 +83,68 @@ public partial class MainWindow : Window
     }
 
 
+    public TreeViewItem CreateTreeEntryForDataLoader(DataLoader loader)
+    {
+        var treeViewItem = new TreeViewItem();
+        treeViewItem.Items.Add(new Button());
+        treeViewItem.Header = "Unknown";
+        treeViewItem.Tag = loader;
+        if (loader is Chunk chk)
+        {
+            treeViewItem.Header = ChunkList.GetChunkName(chk.Id);
+            if (chk is Frame frmLoader)
+            {
+                treeViewItem.Header = $"Frame \"{frmLoader.Name}\"";
+            }
+            
+            if (chk is ListChunk list)
+            {
+                foreach (var item in list)
+                {
+                    treeViewItem.Items.Add(CreateTreeEntryForDataLoader(item));
+                }
+            }
+        }
+        else
+        {
+            if (loader is Extension ext)
+                treeViewItem.Header = ext.Name;
+            else if (loader is SoundItem snd)
+                treeViewItem.Header = snd.Name;
 
+        }
+
+        treeViewItem.PointerPressed += (o, e) =>
+        {
+            if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed)
+            {
+                var contextMenu = new ContextMenu();
+                var saveRaw = new TextBlock();
+
+                saveRaw.Text = "Save(Raw)";
+                saveRaw.PointerPressed += (o, e) =>
+                {
+                    contextMenu.Close();
+
+                };
+                contextMenu.Items.Add(saveRaw);
+
+                var saveUncompressed = new TextBlock();
+                saveUncompressed.Text = "Save(Uncompressed)";
+                saveUncompressed.PointerPressed += (o, e) =>
+                {
+                    contextMenu.Close();
+
+                };
+                contextMenu.Items.Add(saveUncompressed);
+                contextMenu.Placement = PlacementMode.Pointer;
+                contextMenu.PlacementTarget = (e.Source as Control);
+                contextMenu.Open(this);
+            }
+        };
+
+        return treeViewItem;
+    }
     public void StartLoadingGame(string path)
     {
 
@@ -106,7 +168,7 @@ public partial class MainWindow : Window
             strBuilder.AppendLine($"Number of frames: {game.Frames.Count}");
             strBuilder.AppendLine($"Number of objects: {game.FrameItems.Count}");
             strBuilder.AppendLine($"Number of images: {game.Images.Items.Count}");
-            strBuilder.AppendLine($"Number of sounds: {game.Sounds.Items.Count}");
+            strBuilder.AppendLine($"Number of sounds: {game.Sounds.Count}");
             strBuilder.AppendLine($"Game build type: {CTFAKContext.Current.BuildType}");
             GameInfoText.Text = strBuilder.ToString();
             ChunkDetails.Items.Clear();
@@ -114,49 +176,7 @@ public partial class MainWindow : Window
             var chunks = game.Chunks;
             foreach (var chk in chunks.Items)
             {
-                var treeViewItem = new TreeViewItem();
-
-
-                treeViewItem.Header = ChunkList.GetChunkName(chk.Id);
-                if (chk is Frame frmLoader)
-                {
-                    treeViewItem.Header = $"Frame \"{frmLoader.Name}\"";
-                }
-                treeViewItem.Tag = chk;
-                treeViewItem.Tapped += (o, e) =>
-                {
-                    DisplayChunk(chk);
-                };
-                treeViewItem.PointerPressed += (o, e) =>
-                {
-
-                    if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed)
-                    {
-                        var contextMenu = new ContextMenu();
-                        var saveRaw = new TextBlock();
-
-                        saveRaw.Text = "Save(Raw)";
-                        saveRaw.PointerPressed += (o, e) =>
-                        {
-                            contextMenu.Close();
-
-                        };
-                        contextMenu.Items.Add(saveRaw);
-
-                        var saveUncompressed = new TextBlock();
-                        saveUncompressed.Text = "Save(Uncompressed)";
-                        saveUncompressed.PointerPressed += (o, e) =>
-                        {
-                            contextMenu.Close();
-
-                        };
-                        contextMenu.Items.Add(saveUncompressed);
-                        contextMenu.Placement = PlacementMode.Pointer;
-                        contextMenu.PlacementTarget = (e.Source as Control);
-                        contextMenu.Open(this);
-                    }
-                };
-                ChunkTree.Items.Add(treeViewItem);
+                ChunkTree.Items.Add(CreateTreeEntryForDataLoader(chk));
             }
 
 
@@ -164,24 +184,28 @@ public partial class MainWindow : Window
         backgroundWorker.RunWorkerAsync();
     }
 
-    public void DisplayChunk(Chunk chk)
+    public void DisplayDataLoader(DataLoader loader)
     {
         ChunkDetails.Items.Clear();
-        ;
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"Name: {ChunkList.GetChunkName(chk.Id)}" });
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"Loader: {chk?.GetType().Name ?? "None"}" });
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"Flag: {chk.Flag}" });
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"File offset: 0x{chk.FileOffset.ToString("X4")}" });
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"File size: {chk.FileSize.ToPrettySize()}" });
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"Unpacked size: {chk.UnpackedSize.ToPrettySize()}" });
-        ChunkDetails.Items.Add(new TextBlock());
+
+        if (loader is Chunk chk)
+        {
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Name: {ChunkList.GetChunkName(chk.Id)}" });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Loader: {chk?.GetType().Name ?? "None"}" });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Flag: {chk.Flag}" });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"File offset: 0x{chk.FileOffset.ToString("X4")}" });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"File size: {chk.FileSize.ToPrettySize()}" });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Unpacked size: {chk.UnpackedSize.ToPrettySize()}" });
+            ChunkDetails.Items.Add(new TextBlock());
+        }
+        
 
 
-        if (chk is StringChunk strChk)
+        if (loader is StringChunk strChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Contents: {strChk.Value}", TextWrapping = TextWrapping.WrapWithOverflow });
         }
-        else if (chk is AppHeader hdrChk)
+        else if (loader is AppHeader hdrChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Screen Resolution: {hdrChk.WindowWidth}x{hdrChk.WindowHeight}", TextWrapping = TextWrapping.WrapWithOverflow });
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Initial Lives: {hdrChk.InitialLives}", TextWrapping = TextWrapping.WrapWithOverflow });
@@ -190,11 +214,15 @@ public partial class MainWindow : Window
             ChunkDetails.Items.Add(new TextBlock() { Text = $"New flags: {hdrChk.NewFlags}", TextWrapping = TextWrapping.WrapWithOverflow });
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Other flags: {hdrChk.OtherFlags}", TextWrapping = TextWrapping.WrapWithOverflow });
         }
-        else if (chk is Frame frmChk)
+        else if (loader is Frame frmChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Frame size: {frmChk.Width}x{frmChk.Height}", TextWrapping = TextWrapping.WrapWithOverflow });
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Flags: {frmChk.Flags}", TextWrapping = TextWrapping.WrapWithOverflow });
+        }
 
+        if (loader is Extension ext)
+        {
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Extension name: {ext.Name}" });
         }
 
     }
@@ -240,7 +268,7 @@ public partial class MainWindow : Window
         worker.DoWork += (o, e) =>
         {
             var game = CurrentFile.GameData;
-            var sounds = game.Sounds.Items;
+            var sounds = game.Sounds;
             var directory = Path.Join("Dumps", game.Name, "Sounds");
             Directory.CreateDirectory(directory);
             int i = 0;
@@ -290,5 +318,10 @@ public partial class MainWindow : Window
             SetStatus("Idle", 0);
         };
         worker.RunWorkerAsync();
+    }
+    
+    private void ChunkTree_OnTapped(object? sender, TappedEventArgs e)
+    {
+        DisplayDataLoader((ChunkTree.SelectedItem as Control).Tag as DataLoader);
     }
 }

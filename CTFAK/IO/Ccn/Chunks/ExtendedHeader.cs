@@ -6,7 +6,6 @@ namespace CTFAK.IO.CCN.Chunks;
 [ChunkLoader(8773, "ExtendedHeader")]
 public class ExtendedHeader : Chunk
 {
-    public int BuildType;
 
     public BitDict CompressionFlags = new(new[]
     {
@@ -63,8 +62,8 @@ public class ExtendedHeader : Chunk
         "Unknown1"
     });
 
-    public int ScreenAngle;
-    public int ScreenRatio;
+    public short ScreenAngle;
+    public short ScreenRatio;
 
     public BitDict ViewFlags = new(new[]
     {
@@ -73,18 +72,26 @@ public class ExtendedHeader : Chunk
 
     public override void Read(ByteReader reader)
     {
-        Flags.Flag = (uint)reader.ReadInt32();
+        Flags.Flag = reader.ReadUInt32();
         reader.Skip(3); // idk
         Context.BuildType = (FusionBuildType)reader.ReadByte();
-        CompressionFlags.Flag = (uint)reader.ReadInt32();
+        CompressionFlags.Flag = reader.ReadUInt32();
         ScreenRatio = reader.ReadInt16();
         ScreenAngle = reader.ReadInt16();
-        ViewFlags.Flag = (uint)reader.ReadInt16();
-        NewFlags.Flag = (uint)reader.ReadInt16();
+        ViewFlags.Flag = reader.ReadUInt16();
+        NewFlags.Flag = reader.ReadUInt16();
     }
 
     public override void Write(ByteWriter writer)
     {
-        throw new NotImplementedException();
+        writer.WriteUInt32(Flags.Flag);
+        writer.Skip(3);
+        writer.WriteInt8((byte)Context.BuildType);
+        writer.WriteUInt32(CompressionFlags.Flag);
+        writer.WriteInt16(ScreenRatio);
+        writer.WriteInt16(ScreenAngle);
+        writer.WriteUInt16((ushort)ViewFlags.Flag);
+        writer.WriteUInt16((ushort)NewFlags.Flag);
+        
     }
 }

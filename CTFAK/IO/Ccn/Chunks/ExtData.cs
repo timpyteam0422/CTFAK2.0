@@ -16,6 +16,7 @@ public class ExtData : Chunk
 
     public override void Write(ByteWriter writer)
     {
-        throw new NotImplementedException();
+        writer.WriteAscii(Name);
+        writer.WriteBytes(Data);
     }
 }

@@ -2,30 +2,9 @@
 
 namespace CTFAK.IO.Common.Banks;
 
-public class MusicBank : Chunk
+public class MusicBank : ListChunk<MusicFile>
 {
-    public List<MusicFile> Items = new();
-    public int NumOfItems;
-    public int References = 0;
 
-    public override void Write(ByteWriter writer)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void Read(ByteReader reader)
-    {
-        Items = new List<MusicFile>();
-        // if (!Settings.DoMFA)return;
-        NumOfItems = reader.ReadInt32();
-        for (var i = 0; i < NumOfItems; i++)
-        {
-            if (Context.Android) continue;
-            var item = new MusicFile();
-            item.Read(reader);
-            Items.Add(item);
-        }
-    }
 }
 
 public class MusicFile : DataLoader

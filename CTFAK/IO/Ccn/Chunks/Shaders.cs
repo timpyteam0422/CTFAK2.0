@@ -4,17 +4,13 @@ using CTFAK.Memory;
 namespace CTFAK.IO.CCN.Chunks;
 
 [ChunkLoader(8771, "Shaders")]
-public class Shaders : Chunk
-
+public class Shaders : DictChunk<int,Shader>
 {
-    public Dictionary<int, Shader> ShaderList;
-
     public override void Read(ByteReader reader)
     {
         var start = reader.Tell();
         var count = reader.ReadInt32();
         var offsets = new List<int>();
-        ShaderList = new Dictionary<int, Shader>();
         for (var i = 0; i < count; i++) offsets.Add(reader.ReadInt32());
 
         foreach (var offset in offsets)
@@ -22,7 +18,7 @@ public class Shaders : Chunk
             reader.Seek(start + offset);
             var shader = new Shader();
             shader.Read(reader);
-            ShaderList.Add(offsets.IndexOf(offset), shader);
+            Items.Add(offsets.IndexOf(offset), shader);
         }
     }
 

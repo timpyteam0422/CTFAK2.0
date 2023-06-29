@@ -1,4 +1,5 @@
-﻿using CTFAK.IO.CCN.Chunks;
+﻿using System.Threading.Tasks.Dataflow;
+using CTFAK.IO.CCN.Chunks;
 using CTFAK.IO.CCN.Chunks.Frame;
 using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.IO.Common.Banks;
@@ -225,6 +226,11 @@ public class GameData : DataLoader
 
     public override void Write(ByteWriter writer)
     {
-
+        writer.WriteAscii("PAMU");
+        writer.WriteInt16(runtimeVersion);
+        writer.WriteInt16(runtimeSubversion);
+        writer.WriteInt32(productVersion);
+        writer.WriteInt32(Context.BuildNumber);
+        Chunks.Write(writer);
     }
 }

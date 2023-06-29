@@ -4,29 +4,26 @@ using CTFAK.Memory;
 namespace CTFAK.IO.CCN.Chunks;
 
 [ChunkLoader(8756, "Extensions")]
-public class Extensions : Chunk
+public class Extensions : ListChunk<Extension>
 {
     internal ushort PreloadExtensions;
-    public List<Extension> Items;
-
     public override void Read(ByteReader reader)
     {
         var count = reader.ReadUInt16();
         PreloadExtensions = reader.ReadUInt16();
-        Items = new List<Extension>();
         for (var i = 0; i < count; i++)
         {
             var ext = new Extension();
             ext.Read(reader);
-            Items.Add(ext);
+            items.Add(ext);
         }
     }
 
     public override void Write(ByteWriter writer)
     {
-        writer.WriteInt16((short)Items.Count);
+        writer.WriteInt16((short)items.Count);
         writer.WriteInt16((short)PreloadExtensions);
-        foreach (var item in Items) item.Write(writer);
+        foreach (var item in items) item.Write(writer);
     }
 }
 

@@ -15,7 +15,7 @@ public class StringChunk : Chunk
 
     public override void Write(ByteWriter writer)
     {
-        throw new NotImplementedException();
+        writer.WriteUnicode(Value); //TODO: Might wanna change that to WriteUniversal
     }
 }
 

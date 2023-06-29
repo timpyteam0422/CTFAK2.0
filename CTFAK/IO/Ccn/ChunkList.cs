@@ -23,7 +23,7 @@ public class ChunkList
 #endif
 
     public List<Chunk> Items = new List<Chunk>();
-    public DataLoader? Parent;
+    public DataLoader Parent;
 
     public delegate void OnChunkLoadedEvent(int chunkId, Chunk loader);
 
@@ -192,7 +192,7 @@ return $"Unknown-{id}";
     {
         foreach (var chk in Items)
         {
-            chk.Write(writer);
+            chk.CompressAndWrite(writer);
         }
     }
 

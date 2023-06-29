@@ -50,7 +50,7 @@
                                                
                                              
                                                 <ListBox Grid.Row="0" Name="ChunkDetails" Grid.Column="1"/>
-                                                <TreeView Grid.Row="0" Grid.Column="2" Name="ChunkTree"></TreeView>
+                                                <TreeView Grid.Row="0" Grid.Column="2" Name="ChunkTree" Tapped="ChunkTree_OnTapped"></TreeView>
                                 
                                 
                                         </Grid>

@@ -3,7 +3,7 @@ using CTFAK.Memory;
 
 namespace CTFAK.IO.CCN.Chunks;
 
-public class BinaryFile : Chunk
+public class BinaryFile : DataLoader
 {
     public byte[] Data;
     public string Name;
@@ -22,26 +22,6 @@ public class BinaryFile : Chunk
 }
 
 [ChunkLoader(8760, "BinaryFiles")]
-public class BinaryFiles : Chunk
+public class BinaryFiles : ListChunk<BinaryFile>
 {
-    public List<BinaryFile> Files = new();
-
-    public override void Read(ByteReader reader)
-    {
-        var count = reader.ReadInt32();
-        Files = new List<BinaryFile>();
-        for (var i = 0; i < count; i++)
-        {
-            var file = new BinaryFile();
-            file.Read(reader);
-            Files.Add(file);
-        }
-    }
-
-    public override void Write(ByteWriter writer)
-    {
-        writer.WriteInt32(Files.Count);
-        foreach (var item in Files)
-            item.Write(writer);
-    }
 }

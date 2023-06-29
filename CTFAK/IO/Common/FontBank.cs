@@ -4,29 +4,8 @@ using CTFAK.Memory;
 namespace CTFAK.IO.Common.Banks;
 
 [ChunkLoader(26215, "FontBank")]
-public class FontBank : Chunk
+public class FontBank : ListChunk<FontItem>
 {
-
-    public List<FontItem> Items = new();
-
-    public override void Read(ByteReader reader)
-    {
-        var count = reader.ReadInt32();
-
-        Items = new List<FontItem>();
-        for (var i = 0; i < count; i++)
-        {
-            var item = new FontItem();
-            item.Read(reader);
-            Items.Add(item);
-        }
-    }
-
-    public override void Write(ByteWriter writer)
-    {
-        writer.WriteInt32(Items.Count);
-        foreach (var item in Items) item.Write(writer);
-    }
 }
 
 public class FontItem : DataLoader

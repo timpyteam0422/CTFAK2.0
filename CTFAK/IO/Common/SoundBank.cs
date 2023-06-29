@@ -4,61 +4,18 @@ using CTFAK.Memory;
 namespace CTFAK.IO.Common.Banks.SoundBank;
 
 [ChunkLoader(26216, "SoundBank")]
-public class SoundBank : Chunk
+public class SoundBank : ListChunk<SoundItem>
 {
-    public bool IsCompressed = true;
-    public List<SoundItem> Items = new();
 
-    public int NumOfItems;
-    public int References = 0;
-    public static event SaveHandler OnSoundLoaded;
-
-    public override void Read(ByteReader reader)
-    {
-        Items = new List<SoundItem>();
-        NumOfItems = reader.ReadInt32();
-
-        for (var i = 0; i < NumOfItems; i++)
-        {
-            if (Context.Android) continue;
-            if (Context.Old) continue;
-
-            var item = new SoundItem();
-
-            item.IsCompressed = IsCompressed;
-            item.Read(reader);
-            OnSoundLoaded?.Invoke(i, NumOfItems);
-
-            Items.Add(item);
-        }
-    }
-
-    public override void Write(ByteWriter writer)
-    {
-        writer.WriteInt32(Items.Count);
-        foreach (var item in Items) item.Write(writer);
-    }
 }
 
-public class SoundBase : DataLoader
-{
-    public override void Write(ByteWriter writer)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void Read(ByteReader reader)
-    {
-    }
-}
-
-public class SoundItem : SoundBase
+public class SoundItem : DataLoader
 {
     public int Checksum;
     public byte[] Data;
     public uint Flags;
     public uint Handle;
-    public bool IsCompressed;
+    public bool IsCompressed=true;
     public string Name;
     public uint References;
     public int Size;
@@ -66,7 +23,6 @@ public class SoundItem : SoundBase
     //[MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public override void Read(ByteReader reader)
     {
-        base.Read(reader);
 
         var start = reader.Tell();
 

@@ -5,10 +5,8 @@ using CTFAK.Memory;
 namespace CTFAK.IO.CCN.Chunks;
 
 [ChunkLoader(8745, "FrameItems")]
-public class FrameItems : Chunk
+public class FrameItems : DictChunk<int,ObjectInfo>
 {
-    public Dictionary<int, ObjectInfo> Items = new();
-
     public override void Read(ByteReader reader)
     {
         var count = reader.ReadInt32();
@@ -19,17 +17,19 @@ public class FrameItems : Chunk
             Items.Add(newObject.Handle, newObject);
         }
     }
-
     public override void Write(ByteWriter writer)
     {
+        writer.WriteInt32(Items.Count);
+        foreach (var item in Items)
+        {
+            item.Value.Write(writer);
+        }
     }
 }
 
 [ChunkLoader(8767, "FrameItems2")]
-public class FrameItems2 : Chunk
+public class FrameItems2 : DictChunk<int,ObjectInfo>
 {
-    public Dictionary<int, ObjectInfo> Items = new();
-
     public override void Read(ByteReader reader)
     {
         var count = reader.ReadInt32();
@@ -40,8 +40,12 @@ public class FrameItems2 : Chunk
             Items.Add(newObject.Handle, newObject);
         }
     }
-
     public override void Write(ByteWriter writer)
     {
+        writer.WriteInt32(Items.Count);
+        foreach (var item in Items)
+        {
+            item.Value.Write(writer);
+        }
     }
 }

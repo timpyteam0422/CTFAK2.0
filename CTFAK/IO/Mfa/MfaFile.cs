@@ -299,7 +299,6 @@ public class MfaFile : FusionFile
         Fonts.Read(reader);
 
         if (reader.ReadAscii(4) != SoundBankId) throw new Exception("Invalid Sound Bank");
-        Sounds.IsCompressed = false;
         Sounds.Read(reader);
 
         if (reader.ReadAscii(4) != MusicBankId) throw new Exception("Invalid Music Bank");
