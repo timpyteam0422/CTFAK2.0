@@ -1,20 +1,17 @@
-﻿using CTFAK.FileReaders;
-using CTFAK.GUI.CLI;
-using CTFAK.MMFParser.CCN;
+﻿using CTFAK.IO;
+using CTFAK.IO.CCN;
 
 namespace CTFAK.GUI.PluginSystem;
 
 public static class PluginUtils
 {
-    public static IFileReader GetReader()
+    public static GameFile GetFile()
     {
-        if (Program.IsCli)
-            return MainInterface.CurrentReader;
-        else return MainWindow.Instance.CurrentReader;
+        return MainWindow.Instance.CurrentFile;
     }
 
     public static GameData GetGameData()
     {
-        return GetReader().GetGameData();
+        return GetFile().GameData;
     }
 }

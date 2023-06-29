@@ -5,46 +5,22 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using CTFAK.FileReaders;
-
 namespace CTFAK.GUI;
 
 public partial class FileSelectorWindow : Window
 {
-    public List<IFileReader> fileReaders = new List<IFileReader>();
     public FileSelectorWindow()
     {
         InitializeComponent();
         FileReaders = this.FindControl<ListBox>("FileReaders");
         FilePath = this.FindControl<TextBox>("FilePath");
         LoadFileButton = this.FindControl<Button>("LoadFileButton");
+        AdvancedCheckbox = this.FindControl<CheckBox>("AdvancedCheckbox");
+        AdvancedSettings = this.FindControl<Grid>("AdvancedSettings");
+        RootGrid = this.FindControl<Grid>("RootGrid");
         if (!Design.IsDesignMode)
         {
-            FilePath.TextChanged += (a, b) =>
-            {
-                LoadFileButton.IsEnabled = File.Exists(FilePath.Text);
-            };
-            var types = typeof(IFileReader).Assembly.GetTypes();
-            foreach (var type in types)
-            {
-                if (type.GetInterface(typeof(IFileReader).FullName) != null)
-                {
-                    fileReaders.Add(Activator.CreateInstance(type) as IFileReader); 
-                }
-            }
 
-            fileReaders=fileReaders.OrderBy(a => a.Priority).ToList();
-        
-            foreach (var reader in fileReaders)
-            {
-            
-                var listItem = new TextBlock();
-                listItem.Text = reader.Name;
-                listItem.Tag = reader;
-                FileReaders.Items.Add(listItem);
-            }
-
-            FileReaders.SelectedIndex = 0;
         }
         
 
@@ -68,7 +44,20 @@ public partial class FileSelectorWindow : Window
     private void LoadFile_OnClick(object sender, RoutedEventArgs e)
     {
         Close();
-        var reader = (FileReaders.SelectedItem as TextBlock).Tag as IFileReader;
-        MainWindow.Instance.StartLoadingGame(reader,FilePath.Text);
+        MainWindow.Instance.StartLoadingGame(FilePath.Text);
+    }
+
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        //refreshSize();
+        
+        AdvancedSettings.IsVisible = AdvancedCheckbox.IsChecked.Value;
+        Console.WriteLine(AdvancedSettings.Height);
+    }
+
+    private void FilePath_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        LoadFileButton.IsEnabled = File.Exists(FilePath.Text);
     }
 }

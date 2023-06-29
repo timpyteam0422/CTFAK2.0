@@ -1,82 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0-windows</TargetFramework>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <AssemblyVersion>2.3</AssemblyVersion>
-        <FileVersion>2.3</FileVersion>
-        <NeutralLanguage>en</NeutralLanguage>
-        <OutputType>Library</OutputType>
-        <CustomResourceTypesSupport>true</CustomResourceTypesSupport>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
         <RootNamespace>CTFAK</RootNamespace>
-        <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EasyNetLog" Version="2.1.4" />
-        <PackageReference Include="Ionic.Zlib" Version="1.9.1.5" />
-        <PackageReference Include="Joveler.Compression.ZLib" Version="4.2.0">
-            <IsTrimmable>false</IsTrimmable>
-        </PackageReference>
-        <PackageReference Include="K4os.Compression.LZ4" Version="1.3.5" />
-        <PackageReference Include="System.Drawing.Common" Version="8.0.0-preview.2.23128.3" />
-        <PackageReference Include="System.Resources.Extensions" Version="8.0.0-preview.4.23259.5" />
+      <PackageReference Include="EasyNetLog" Version="2.1.4" />
+      <PackageReference Include="Joveler.Compression.ZLib" Version="4.2.0" />
+      <PackageReference Include="K4os.Compression.LZ4" Version="1.3.5" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Properties\Resources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
+      <None Update="x64\zlibwapi.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Properties\Resources.resx">
-            <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-
-        <EmbeddedResource Include="Resources\Active Picture.png" />
-        <EmbeddedResource Include="Resources\Active.png" />
-        <EmbeddedResource Include="Resources\ActiveSystemBox.png" />
-        <EmbeddedResource Include="Resources\Backdrop.png" />
-        <EmbeddedResource Include="Resources\Button.png" />
-        <EmbeddedResource Include="Resources\ComboBox.png" />
-        <EmbeddedResource Include="Resources\Counter.png" />
-        <EmbeddedResource Include="Resources\EasyScrollbar.png" />
-        <EmbeddedResource Include="Resources\EditBoxSel.png" />
-        <EmbeddedResource Include="Resources\EEEditbox.png" />
-        <EmbeddedResource Include="Resources\EmptyIcon.png" />
-        <EmbeddedResource Include="Resources\ExecuteInConsole.png" />
-        <EmbeddedResource Include="Resources\File.png" />
-        <EmbeddedResource Include="Resources\FileFolderObject.png" />
-        <EmbeddedResource Include="Resources\FontEmbedObject.png" />
-        <EmbeddedResource Include="Resources\Formatted Text.png" />
-        <EmbeddedResource Include="Resources\Formatted_Text.png" />
-        <EmbeddedResource Include="Resources\Ini.png" />
-        <EmbeddedResource Include="Resources\IniPLUS.png" />
-        <EmbeddedResource Include="Resources\InputObject.png" />
-        <EmbeddedResource Include="Resources\InternalListObject.png" />
-        <EmbeddedResource Include="Resources\List.png" />
-        <EmbeddedResource Include="Resources\Lives.png" />
-        <EmbeddedResource Include="Resources\PopupMenu.png" />
-        <EmbeddedResource Include="Resources\PopupMessageobject2.png" />
-        <EmbeddedResource Include="Resources\QandA.png" />
-        <EmbeddedResource Include="Resources\Score.png" />
-        <EmbeddedResource Include="Resources\String.png" />
-        <EmbeddedResource Include="Resources\EditBox.png" />
-        <EmbeddedResource Include="Resources\SubApp.png" />
-        <EmbeddedResource Include="Resources\TreeControl.png" />
-        <EmbeddedResource Include="Resources\WindowControl.png" />
-        <EmbeddedResource Include="Resources\XLua.png" />
-        <EmbeddedResource Include="Resources\Perspective.png" />
-        <EmbeddedResource Include="Resources\DateAndTime.png" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="$(ProjectDir)x64\**" CopyToOutputDirectory="PreserveNewest" LinkBase="x64\" />
-    </ItemGroup>
-
 
 </Project>

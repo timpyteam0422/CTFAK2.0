@@ -8,15 +8,12 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit.TextMate;
-using CTFAK.FileReaders;
 using CTFAK.GUI.PluginSystem;
+using CTFAK.IO;
+using CTFAK.IO.CCN;
+using CTFAK.IO.CCN.Chunks;
+using CTFAK.IO.CCN.Chunks.Frame;
 using CTFAK.Memory;
-using CTFAK.MMFParser.CCN;
-using CTFAK.MMFParser.CCN.Chunks;
-using CTFAK.MMFParser.CCN.Chunks.Frame;
-using CTFAK.MMFParser.CCN.Chunks.Objects;
-using CTFAK.MMFParser.MFA;
-using CTFAK.MMFParser.MMFUtils;
 using CTFAK.Utils;
 using TextMateSharp.Grammars;
 
@@ -25,7 +22,7 @@ namespace CTFAK.GUI;
 public partial class MainWindow : Window
 {
     public static MainWindow Instance;
-    public IFileReader CurrentReader;
+    public GameFile CurrentFile;
     public MainWindow()
     {
         Instance = this;
@@ -35,7 +32,6 @@ public partial class MainWindow : Window
             var plugin = (PluginList.SelectedItem as Control).Tag as IPlugin;
             PluginPanel.Children.Clear();
             PluginPanel.Children.Add(plugin as UserControl);
-            Console.WriteLine(plugin.Name);
         };
         
     }
@@ -44,7 +40,7 @@ public partial class MainWindow : Window
     private void SelectFile_OnClick(object? sender, RoutedEventArgs e)
     {
         var fileSelector = new FileSelectorWindow();
-        fileSelector.ShowDialog(this);
+        fileSelector.Show(this);
     }
 
    
@@ -55,6 +51,8 @@ public partial class MainWindow : Window
         if (!Design.IsDesignMode)
         {
             CTFAKCore.Init();
+
+            VersionText.Text = $"CTFAK build hash: {CTFAKCore.GetVersion()}";
             Directory.CreateDirectory("Plugins");
             var files = Directory.GetFiles("Plugins","*.dll");
             foreach (var file in files)
@@ -75,12 +73,11 @@ public partial class MainWindow : Window
                         }
                         catch(Exception ex)
                         {
-                            Console.WriteLine("Exception");
+                            Logger.LogError("Error while loading plugins: "+ex);
                         }
                     }
                 }
             }
-
       
         }
         
@@ -89,26 +86,22 @@ public partial class MainWindow : Window
 
 
 
-    public void StartLoadingGame(IFileReader reader, string path)
+    public void StartLoadingGame(string path)
     {
-        if (CurrentReader != null)
-        {
-            CurrentReader.Close();
-        }
+       
         SetStatus("Loading...",0);
         var backgroundWorker = new BackgroundWorker();
         backgroundWorker.DoWork += (o,e) =>
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            CurrentReader = reader;
-            CurrentReader.LoadGame(path);
+            CurrentFile = LoadHelper.LoadGameFromPath(path);
             stopwatch.Stop();
-            Console.WriteLine($"Initial loading finished in {stopwatch.Elapsed.TotalSeconds} seconds");
+            Logger.Log($"Initial loading finished in {stopwatch.Elapsed.TotalSeconds} seconds");
         };
         backgroundWorker.RunWorkerCompleted += (o, e) =>
         {
-            var game = CurrentReader.GetGameData();
+            var game = CurrentFile.GameData;
             var strBuilder = new StringBuilder();
             strBuilder.AppendLine($"Name: {game.Name}");
             strBuilder.AppendLine($"Author: {game.Author}");
@@ -117,6 +110,7 @@ public partial class MainWindow : Window
             strBuilder.AppendLine($"Number of objects: {game.FrameItems.Count}");
             strBuilder.AppendLine($"Number of images: {game.Images.Items.Count}");
             strBuilder.AppendLine($"Number of sounds: {game.Sounds.Items.Count}");
+            strBuilder.AppendLine($"Game build type: {CTFAKContext.Current.BuildType}");
             GameInfoText.Text = strBuilder.ToString();
             ChunkDetails.Items.Clear();
             ChunkTree.Items.Clear();
@@ -124,12 +118,10 @@ public partial class MainWindow : Window
             foreach (var chk in chunks.Items)
             {
                 var treeViewItem = new TreeViewItem();
-                string chunkName;
-                if (!ChunkList.ChunkNames.TryGetValue(chk.Id, out chunkName))
-                    chunkName = $"Unknown-{chk.Id}";
-                
-                treeViewItem.Header = chunkName;
-                if (chk.Loader is Frame frmLoader)
+
+
+                treeViewItem.Header = ChunkList.GetChunkName(chk.Id);
+                if (chk is Frame frmLoader)
                 {
                     treeViewItem.Header = $"Frame \"{frmLoader.Name}\"";
                 }
@@ -159,11 +151,7 @@ public partial class MainWindow : Window
                         saveUncompressed.PointerPressed += (o, e) =>
                         {
                             contextMenu.Close();
-                            var reader = CurrentReader.GetFileReader();
-                            reader.Seek(chk.FileOffset);
-                            var tempChunk = new Chunk();
-                            var data = tempChunk.Read(reader);
-                            File.WriteAllBytes("test.bin",data);
+                            
                         };
                         contextMenu.Items.Add(saveUncompressed);
                         contextMenu.Placement = PlacementMode.Pointer;
@@ -182,25 +170,21 @@ public partial class MainWindow : Window
     public void DisplayChunk(Chunk chk)
     {
         ChunkDetails.Items.Clear();
-        string chunkName;
-        if (!ChunkList.ChunkNames.TryGetValue(chk.Id, out chunkName))
-            chunkName = $"Unknown-{chk.Id}";
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"Name: {chunkName}" });
-        ChunkDetails.Items.Add(new TextBlock() { Text = $"Loader: {chk?.Loader?.GetType().Name ?? "None"}" });
+;
+        ChunkDetails.Items.Add(new TextBlock() { Text = $"Name: {ChunkList.GetChunkName(chk.Id)}" });
+        ChunkDetails.Items.Add(new TextBlock() { Text = $"Loader: {chk?.GetType().Name ?? "None"}" });
         ChunkDetails.Items.Add(new TextBlock() { Text = $"Flag: {chk.Flag}" });
         ChunkDetails.Items.Add(new TextBlock() { Text = $"File offset: 0x{chk.FileOffset.ToString("X4")}" });
         ChunkDetails.Items.Add(new TextBlock() { Text = $"File size: {chk.FileSize.ToPrettySize()}" });
         ChunkDetails.Items.Add(new TextBlock() { Text = $"Unpacked size: {chk.UnpackedSize.ToPrettySize()}" });
         ChunkDetails.Items.Add(new TextBlock());
 
-        var loader = chk.Loader;
-        if(loader is null) return;
 
-        if (loader is StringChunk strChk)
+        if (chk is StringChunk strChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Contents: {strChk.Value}", TextWrapping = TextWrapping.WrapWithOverflow});
         }
-        else if (loader is AppHeader hdrChk)
+        else if (chk is AppHeader hdrChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Screen Resolution: {hdrChk.WindowWidth}x{hdrChk.WindowHeight}", TextWrapping = TextWrapping.WrapWithOverflow});
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Initial Lives: {hdrChk.InitialLives}", TextWrapping = TextWrapping.WrapWithOverflow});
@@ -209,7 +193,7 @@ public partial class MainWindow : Window
             ChunkDetails.Items.Add(new TextBlock() { Text = $"New flags: {hdrChk.NewFlags}", TextWrapping = TextWrapping.WrapWithOverflow});
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Other flags: {hdrChk.OtherFlags}", TextWrapping = TextWrapping.WrapWithOverflow});
         }
-        else if (loader is Frame frmChk)
+        else if (chk is Frame frmChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Frame size: {frmChk.Width}x{frmChk.Height}", TextWrapping = TextWrapping.WrapWithOverflow});
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Flags: {frmChk.Flags}", TextWrapping = TextWrapping.WrapWithOverflow});
@@ -223,7 +207,7 @@ public partial class MainWindow : Window
         var worker = new BackgroundWorker();
         worker.DoWork += (o,e) =>
         {
-            var game = CurrentReader.GetGameData();
+            var game = CurrentFile.GameData;
             var imgs = game.Images.Items;
             var directory = Path.Join("Dumps", game.Name, "Images");
             Directory.CreateDirectory(directory);
@@ -231,7 +215,7 @@ public partial class MainWindow : Window
             int count = imgs.Values.Count;
             foreach (var img in imgs)
             {
-                img.Value.bitmap.Save(Path.Join(directory, $"{img.Key}.png"));
+                //img.Value.bitmap.Save(Path.Join(directory, $"{img.Key}.png"));
                 i++;
                 SetStatus($"Dumping images: {i}/{count}",  (int)(((float)i/(float)count)*100f));
             }
@@ -258,7 +242,7 @@ public partial class MainWindow : Window
         var worker = new BackgroundWorker();
         worker.DoWork += (o,e) =>
         {
-            var game = CurrentReader.GetGameData();
+            var game = CurrentFile.GameData;
             var sounds = game.Sounds.Items;
             var directory = Path.Join("Dumps", game.Name, "Sounds");
             Directory.CreateDirectory(directory);
@@ -291,18 +275,17 @@ public partial class MainWindow : Window
         {
             try
             {
-                SetStatus("Dumping MFA",0);
-                var game = CurrentReader.GetGameData();
-                var mfa = Pame2Mfa.Convert(game, CurrentReader.GetIcons());
+                /*SetStatus("Dumping MFA",0);
+                var game = CurrentFile.GameData;
+                var mfa = Pame2Mfa.Convert(game, CurrentFile.GetIcons());
                 var dir = Path.Join("Dumps", game.Name ?? "Unknown game");
                 Directory.CreateDirectory(dir);
                 mfa.Write(new ByteWriter(Path.Join(dir,Path.GetFileNameWithoutExtension(game.EditorFilename != null && string.IsNullOrEmpty(game.EditorFilename) ? game.Name : game.EditorFilename )+".mfa"),FileMode.Create));
-
+*/
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Console.WriteLine(exception);
-                throw;
+                Logger.LogError("Error while dumping MFA: "+ex);
             }
         };
         worker.RunWorkerCompleted += (o, e) =>

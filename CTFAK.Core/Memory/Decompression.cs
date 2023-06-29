@@ -2,7 +2,6 @@
 
 using System.IO;
 using System.Runtime.CompilerServices;
-using Ionic.Zlib;
 using Joveler.Compression.ZLib;
 //using Joveler.Compression.ZLib;
 
@@ -10,6 +9,14 @@ namespace CTFAK.Memory;
 
 public static class Decompressor
 {
+    static Decompressor()
+    {
+#if !USE_IONIC
+        ZLibInit.GlobalInit("x64\\zlibwapi.dll");
+#endif
+
+    }
+
     public static ByteWriter Compress(byte[] buffer)
     {
         var writer = new ByteWriter(new MemoryStream());
@@ -71,7 +78,7 @@ public static class Decompressor
     }
 
 
-    public static byte[] DecompressOld(ByteReader reader)
+    /*public static byte[] DecompressOld(ByteReader reader)
     {
         var decompressedSize = reader.PeekInt32() != -1 ? reader.ReadInt32() : 0;
         var start = reader.Tell();
@@ -81,9 +88,9 @@ public static class Decompressor
         var data = DecompressOldBlock(buffer, (int)compressedSize, decompressedSize, out actualSize);
         reader.Seek(start + actualSize);
         return data;
-    }
+    }*/
 
-    public static unsafe byte[] DecompressOldBlock(byte[] buff, int size, int decompSize, out int actualSize)
+    /*public static unsafe byte[] DecompressOldBlock(byte[] buff, int size, int decompSize, out int actualSize)
     {
         // this doesn't work. i gotta rewrite the entire Tinflate.cs file
         Tinflate.tinf_init();
@@ -103,7 +110,7 @@ public static class Decompressor
 
 
         return outputBuffer;
-    }
+    }*/
 
     public static byte[] CompressBlock(byte[] data)
     {

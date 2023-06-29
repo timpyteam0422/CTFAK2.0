@@ -2,11 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CTFAK.GUI.MainWindow"
         Title="CTFAK"
-        
         WindowState="Normal"
         Background="#303035"
         ExtendClientAreaToDecorationsHint="True">
@@ -19,7 +17,7 @@
                 </Grid.RowDefinitions>
                 
                 <StackPanel Grid.Row="0">
-                        <TextBlock Text="CTFAK 2.3" FontFamily="Castellar" FontSize="50" Foreground="#ff6f00"/>
+                        <TextBlock Text="CTFAK 2.4" FontFamily="Castellar" FontSize="50" Foreground="#ff6f00"/>
                 </StackPanel>
                 
                 
@@ -78,8 +76,16 @@
                 <TabItem Header="Settings"></TabItem>
         </TabControl>  
                 
-                <StackPanel Grid.Row="2">
-                        <TextBlock Name="StatusText" Text="Idle"/>
+                <StackPanel Grid.Row="2" Background="#2c2c30">
+                        <Grid>
+                                <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Name="StatusText" Text="Idle"/>
+                                <TextBlock Grid.Column="1" Name="VersionText" Foreground="Gray" HorizontalAlignment="Right"/>
+
+                        </Grid>
                         <ProgressBar Name="StatusProgress" Value="0"/>
                 </StackPanel>
         </Grid>

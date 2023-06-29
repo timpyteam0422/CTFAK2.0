@@ -8,26 +8,32 @@
         WindowState="Normal"
         Background="#303035"
         ExtendClientAreaToDecorationsHint="False"
-        CanResize="False"
+        CanResize="True"
         Width="500"
         Height="300">
         
-        <Grid>
+        <Grid Name="RootGrid">
                 <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                        <TextBox Name="FilePath" Grid.Row="0" Grid.Column="0" Watermark="File path" HorizontalAlignment="Stretch"/>
+                        <TextBox Name="FilePath" Grid.Row="0" Grid.Column="0" Watermark="File path" HorizontalAlignment="Stretch" TextChanged="FilePath_OnTextChanged"/>
                         <Button Grid.Row="0" Grid.Column="1" Click="SelectPath_OnClick"><TextBlock Text="Select..."/></Button>
+                        <CheckBox Name="AdvancedCheckbox" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Click="Button_OnClick">
+                                <TextBlock Text="Advanced Settings"/>
+                        </CheckBox>
                         
-                        <ListBox Name="FileReaders" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></ListBox>
+                        <Grid Name="AdvancedSettings" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="True">
+                                        <ListBox Name="FileReaders"></ListBox>
+                        </Grid>
                         
-                        <Button Name="LoadFileButton" IsEnabled="False" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="LoadFile_OnClick"><TextBlock Text="Open file" HorizontalAlignment="Center"/></Button>
+                        <Button Name="LoadFileButton" IsEnabled="False" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="LoadFile_OnClick"><TextBlock Text="Open file" HorizontalAlignment="Center"/></Button>
         </Grid>
     
 </Window>

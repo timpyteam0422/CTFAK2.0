@@ -11,7 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CTFAK.Core\CTFAK.Core.csproj" />
       <ProjectReference Include="..\CTFAK.GUI\CTFAK.GUI.csproj" />
     </ItemGroup>
 

@@ -2,12 +2,12 @@
 using System.Drawing;
 using System.IO;
 using System.Text;
-using CTFAK.Utils;
 
 namespace CTFAK.Memory;
 
 public class ByteReader : BinaryReader
 {
+    public bool Unicode { get; set; }
     public ByteReader(Stream input) : base(input)
     {
     }
@@ -48,7 +48,8 @@ public class ByteReader : BinaryReader
     {
         return Size() - Tell() >= size;
     }
-
+    public bool EndOfStream=>Size() - Tell() == 0;
+    
     public ushort PeekUInt16()
     {
         var value = ReadUInt16();
@@ -119,7 +120,7 @@ public class ByteReader : BinaryReader
 
     public string ReadUniversal(int len = -1)
     {
-        if (Settings.Unicode)
+        if (CTFAKContext.Current.Unicode)
             return ReadWideString(len);
         return ReadAscii(len);
     }
