@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTFAK.GUI", "CTFAK.GUI\CTFA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamplePlugin", "ExamplePlugin\ExamplePlugin.csproj", "{AFF80565-5F3F-4FCC-A630-614E2E8E4D9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTFAK.Core", "CTFAK.Core\CTFAK.Core.csproj", "{423E462E-A901-43B3-BC4C-A32CA343F62B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTFAK", "CTFAK\CTFAK.csproj", "{423E462E-A901-43B3-BC4C-A32CA343F62B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

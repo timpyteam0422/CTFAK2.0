@@ -4,7 +4,6 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net7.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <AssemblyName>CTFAK</AssemblyName>
         <Nullable>enable</Nullable>
         <ApplicationIcon>CTFAK_Icon_new.ico</ApplicationIcon>
     </PropertyGroup>
@@ -30,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CTFAK.Core\CTFAK.Core.csproj" />
+      <ProjectReference Include="..\CTFAK\CTFAK.csproj" />
     </ItemGroup>
 
 </Project>
