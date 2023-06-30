@@ -1,11 +1,11 @@
 ﻿//#define SLIM
 
+using System.Reflection;
 using CTFAK.Attributes;
 using CTFAK.Memory;
 using CTFAK.Utils;
-using System.Reflection;
 
-namespace CTFAK.IO.CCN;
+namespace CTFAK.IO.Ccn.ChunkSystem;
 
 
 
@@ -170,10 +170,12 @@ return $"Unknown-{id}";
             {
                 Logger.Log($"No loader found for chunk <color=yellow>{chunkId}</color>");
             }
+            else
+            {
+                Logger.Log($"Loading chunk <color=lightblue>{GetChunkName(chunkId)}</color> ({chunkId})");
+            }
 
-
-            Logger.Log(
-                $"Loading chunk <color=lightblue>{GetChunkName(chunkId)}</color> ({chunkId})");
+            
             newChunk.ReadAndLoad(reader);
 
 

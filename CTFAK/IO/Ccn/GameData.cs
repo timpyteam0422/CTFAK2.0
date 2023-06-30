@@ -2,6 +2,7 @@
 using CTFAK.IO.CCN.Chunks;
 using CTFAK.IO.CCN.Chunks.Frame;
 using CTFAK.IO.CCN.Chunks.Objects;
+using CTFAK.IO.Ccn.ChunkSystem;
 using CTFAK.IO.Common.Banks;
 using CTFAK.IO.Common.Banks.ImageBank;
 using CTFAK.IO.Common.Banks.SoundBank;

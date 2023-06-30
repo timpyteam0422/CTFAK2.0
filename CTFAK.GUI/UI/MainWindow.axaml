@@ -55,9 +55,21 @@
                                 
                                         </Grid>
                                 </TabItem>
-                                <TabItem Header="Object Explorer"></TabItem>
-                                <TabItem Header="Sounds"></TabItem>
-                                <TabItem Header="Pack Data"></TabItem>
+                             
+                                <TabItem Header="Pack Data">
+                                        <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ListBox Grid.Column="0" Name="PackDataFiles"/>
+                                                
+                                               <StackPanel Grid.Column="1">
+                                                       <TextBlock Name="PackDataFileDetails"/>
+                                                       <Button Name="PackDataFileDump" Click="PackDataFileDump_OnClick"><TextBlock Text="Dump"/></Button>
+                                               </StackPanel>
+                                        </Grid>
+                                </TabItem>
                                 
                         </TabControl>
                         

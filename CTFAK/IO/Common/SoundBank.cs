@@ -1,4 +1,5 @@
 ﻿using CTFAK.Attributes;
+using CTFAK.IO.Ccn.ChunkSystem;
 using CTFAK.Memory;
 
 namespace CTFAK.IO.Common.Banks.SoundBank;
@@ -9,7 +10,7 @@ public class SoundBank : ListChunk<SoundItem>
 
 }
 
-public class SoundItem : DataLoader
+public class SoundItem : DataLoader,IDumpable
 {
     public int Checksum;
     public byte[] Data;
@@ -46,7 +47,7 @@ public class SoundItem : DataLoader
             soundData = new ByteReader(reader.ReadBytes(decompressedSize));
         }
 
-        Name = soundData.ReadWideString(nameLenght).Replace(" ", "");
+        Name = soundData.ReadWideString().Replace(" ", "");
         if (Flags == 33) soundData.Seek(0);
         Data = soundData.ReadBytes((int)soundData.Size());
         soundData.Close();
@@ -74,5 +75,12 @@ public class SoundItem : DataLoader
         // writer.BaseStream.Position -= 4;
         writer.WriteBytes(Data);
     }
+
+    public MemoryStream DumpToMemoryStream()=>new MemoryStream(Data);
+
+
+    public string OutputName => $"{Name}";
+    public string TypeName => "Sound file";
+    public string FileExtension => ".wav"; // That's a lie
 }
 

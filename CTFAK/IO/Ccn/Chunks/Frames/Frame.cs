@@ -4,6 +4,7 @@ using CTFAK.IO.Common.Events;
 using CTFAK.Memory;
 using CTFAK.Utils;
 using System.Drawing;
+using CTFAK.IO.Ccn.ChunkSystem;
 
 namespace CTFAK.IO.CCN.Chunks.Frame;
 
@@ -267,7 +268,7 @@ public class Events : Chunk
     }
 }
 [ChunkLoader(0x3333, "Frame")]
-public class Frame : Chunk
+public class Frame : BankChunk
 {
     private FrameHeader _header;
     private FrameName _name;
@@ -277,7 +278,6 @@ public class Frame : Chunk
     private Transition _fadeOut;
     private Layers _layers;
     private Events _events;
-    public ChunkList Chunks;
 
     public string Name
     {
@@ -308,48 +308,36 @@ public class Frame : Chunk
         set => _header.Flags = value;
     }
 
-    public override void Read(ByteReader reader)
+    protected override void OnChunkLoaded(int chunkid, Chunk loader)
     {
-        Chunks = new ChunkList();
-        Chunks.OnChunkLoaded += (id, loader) =>
+        switch (chunkid)
         {
-            switch (id)
-            {
-                case 13108:
-                    _header = (FrameHeader)loader;
-                    break;
-                case 13109:
-                    _name = (FrameName)loader;
-                    break;
-                case 13111:
-                    _palette = (FramePalette)loader;
-                    break;
-                case 13112:
-                    _objects = (FrameObjectInstances)loader;
-                    break;
-                case 13113:
-                    _fadeIn = (Transition)loader;
-                    break;
-                case 13114:
-                    _fadeOut = (Transition)loader;
-                    break;
-                case 13117:
-                    _events = (Events)loader;
-                    break;
-                case 13121:
-                    _layers = (Layers)loader;
-                    break;
+            case 13108:
+                _header = (FrameHeader)loader;
+                break;
+            case 13109:
+                _name = (FrameName)loader;
+                break;
+            case 13111:
+                _palette = (FramePalette)loader;
+                break;
+            case 13112:
+                _objects = (FrameObjectInstances)loader;
+                break;
+            case 13113:
+                _fadeIn = (Transition)loader;
+                break;
+            case 13114:
+                _fadeOut = (Transition)loader;
+                break;
+            case 13117:
+                _events = (Events)loader;
+                break;
+            case 13121:
+                _layers = (Layers)loader;
+                break;
                 
-            }
-        };
-        Chunks.Read(reader);
-
-        Logger.Log($"<color=green>Frame Found: {Name}, {Width}x{Height}, {Objects.Count} objects.</color>");
-    }
-
-    public override void Write(ByteWriter writer)
-    {
-        throw new NotImplementedException();
+        }
     }
 }
 

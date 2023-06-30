@@ -17,7 +17,7 @@ public class Quailifer : DataLoader
     {
         ObjectInfo = reader.ReadUInt16();
         Type = reader.ReadInt16();
-        Qualifier = ObjectInfo & 0b11111111111;
+        Qualifier = ObjectInfo & 0b11111111111; // This makes absolutely no sense
     }
 
     public override void Write(ByteWriter writer)

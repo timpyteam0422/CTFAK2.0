@@ -1,6 +1,7 @@
 ﻿using CTFAK.Attributes;
 using CTFAK.Memory;
 using System.Drawing;
+using CTFAK.IO.Ccn.ChunkSystem;
 
 namespace CTFAK.IO.CCN.Chunks.Objects;
 
@@ -138,14 +139,13 @@ public class ObjectEffects : ChildChunk<ObjectInfo>
         throw new NotImplementedException();
     }
 }
-public class ObjectInfo : DataLoader
+public class ObjectInfo : BankChunk
 {
     private ObjectName _name;
     private ObjectHeader _header;
     private ObjectProperties _properties;
     private ObjectEffects _effects;
 
-    public ChunkList Chunks;
     public string Name
     {
         get => _name.Value;
@@ -166,31 +166,20 @@ public class ObjectInfo : DataLoader
 
     public ShaderData ShaderData = new();
 
-    public override void Read(ByteReader reader)
-    {
-        Chunks = new ChunkList(this);
-        Chunks.OnChunkLoaded += (id, loader) =>
-        {
-            switch (id)
-            {
-                case 17476:
-                    _header = (ObjectHeader)loader;
-                    break;
-                case 17477:
-                    _name = (ObjectName)loader;
-                    break;
-            }
-
-        };
-        Chunks.Read(reader);
-
-    }
-
-    public override void Write(ByteWriter writer)
-    {
-        throw new NotImplementedException();
-    }
+  
 
     //public int shaderId;
     //public List<ByteReader> effectItems;
+    protected override void OnChunkLoaded(int chunkId, Chunk loader)
+    {
+        switch (chunkId)
+        {
+            case 17476:
+                _header = (ObjectHeader)loader;
+                break;
+            case 17477:
+                _name = (ObjectName)loader;
+                break;
+        }
+    }
 }
