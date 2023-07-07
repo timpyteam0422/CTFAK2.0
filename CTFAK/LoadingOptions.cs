@@ -2,13 +2,9 @@
 
 public class LoadingOptions
 {
-    public static LoadingOptions Default => new()
-    {
-        LoadImages = true,
-        LoadSounds = true
-    };
+    public static LoadingOptions Default => new();
 
-    public bool LoadImages { get; set; }
+    public bool LoadImages { get; set; } = true;
 
-    public bool LoadSounds { get; set; }
+    public bool LoadSounds { get; set; } = true;
 }
