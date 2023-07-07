@@ -1,26 +1,25 @@
-﻿using System.Collections;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using CTFAK.GUI.PluginSystem;
 using CTFAK.IO;
-using CTFAK.IO.CCN;
+using CTFAK.IO.Ccn.ChunkSystem;
 using CTFAK.IO.CCN.Chunks;
 using CTFAK.IO.CCN.Chunks.Frame;
+using CTFAK.IO.CCN.Chunks.Objects;
+using CTFAK.IO.Common.Banks.SoundBank;
+using CTFAK.IO.Exe;
+using CTFAK.IO.EXE;
 using CTFAK.Utils;
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
-using Avalonia.Layout;
-using Avalonia.Platform.Storage;
-using CTFAK.IO.CCN.Chunks.Objects;
-using CTFAK.IO.Ccn.ChunkSystem;
-using CTFAK.IO.Common.Banks.SoundBank;
-using CTFAK.IO.Exe;
-using CTFAK.IO.EXE;
 
 namespace CTFAK.GUI;
 
@@ -43,7 +42,7 @@ public partial class MainWindow : Window
             var packFile = (PackDataFiles.SelectedItem as Control)?.Tag as PackFile;
             PackDataFileDetails.Text = $"Name: {packFile.PackFilename}\nSize: {packFile.Data.Length.ToPrettySize()}";
         };
-        
+
 
     }
 
@@ -96,7 +95,7 @@ public partial class MainWindow : Window
     }
 
 
-    public TreeViewItem CreateTreeEntryForDataLoader(DataLoader loader,string name = "Unknown")
+    public TreeViewItem CreateTreeEntryForDataLoader(DataLoader loader, string name = "Unknown")
     {
         var treeViewItem = new TreeViewItem();
         treeViewItem.Header = name;
@@ -130,8 +129,8 @@ public partial class MainWindow : Window
                     }
                 }
             }
-            
-            
+
+
             if (chk is Frame frmLoader)
             {
                 treeViewItem.Header = $"Frame \"{frmLoader.Name}\"";
@@ -164,7 +163,7 @@ public partial class MainWindow : Window
             else if (loader is SoundItem snd)
                 treeViewItem.Header = snd.Name;
         }
-        
+
         return treeViewItem;
     }
     public void StartLoadingGame(string path)
@@ -230,7 +229,7 @@ public partial class MainWindow : Window
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Unpacked size: {chk.UnpackedSize.ToPrettySize()}" });
             ChunkDetails.Items.Add(new TextBlock());
         }
-        
+
 
 
         if (loader is StringChunk strChk)
@@ -259,18 +258,18 @@ public partial class MainWindow : Window
 
         if (loader is Animations anims)
         {
-            ChunkDetails.Items.Add(new TextBlock() { Text = $"Animations Count: {anims.AnimationDict.Where(a=>a.Value.DirectionDict.Any(b=>b.Value.Frames.Count>0)).Count()}" });
+            ChunkDetails.Items.Add(new TextBlock() { Text = $"Animations Count: {anims.AnimationDict.Where(a => a.Value.DirectionDict.Any(b => b.Value.Frames.Count > 0)).Count()}" });
         }
-        
+
 
         if (loader is IDumpable dumpable)
         {
-            var button = new Button() { Content = "Dump", HorizontalAlignment = HorizontalAlignment.Stretch};
+            var button = new Button() { Content = "Dump", HorizontalAlignment = HorizontalAlignment.Stretch };
             button.Click += async (o, e) =>
             {
                 var filters = new List<FilePickerFileType>();
-                filters.Add(new FilePickerFileType(dumpable.TypeName) { Patterns = new string[] {dumpable.FileExtension } });
-                var task = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions() {Title = "Select output folder", FileTypeChoices = filters, DefaultExtension = dumpable.FileExtension, SuggestedFileName = dumpable.OutputName});
+                filters.Add(new FilePickerFileType(dumpable.TypeName) { Patterns = new string[] { dumpable.FileExtension } });
+                var task = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions() { Title = "Select output folder", FileTypeChoices = filters, DefaultExtension = dumpable.FileExtension, SuggestedFileName = dumpable.OutputName });
                 if (task == null)
                     return;
                 var outStream = await task.OpenWriteAsync();
@@ -279,7 +278,7 @@ public partial class MainWindow : Window
                 outStream.Dispose();
                 // Not sure if I need to manually dispose those. Slidy, please check
             };
-            ChunkDetails.Items.Add(new ListBoxItem(){Content = button});
+            ChunkDetails.Items.Add(new ListBoxItem() { Content = button });
         }
 
     }
@@ -376,10 +375,10 @@ public partial class MainWindow : Window
         };
         worker.RunWorkerAsync();
     }
-    
+
     private void ChunkTree_OnTapped(object? sender, TappedEventArgs e)
     {
-        if((ChunkTree?.SelectedItem as Control)?.Tag is DataLoader loader)
+        if ((ChunkTree?.SelectedItem as Control)?.Tag is DataLoader loader)
             DisplayDataLoader(loader);
     }
 
@@ -387,8 +386,8 @@ public partial class MainWindow : Window
     {
         var packFile = (PackDataFiles.SelectedItem as Control)?.Tag as PackFile;
         var filters = new List<FilePickerFileType>();
-        filters.Add(new FilePickerFileType("Packed file") { Patterns = new string[] {".*"} });
-        var task = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions() {Title = "Select output folder", FileTypeChoices = filters, SuggestedFileName = packFile.PackFilename});
+        filters.Add(new FilePickerFileType("Packed file") { Patterns = new string[] { ".*" } });
+        var task = await StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions() { Title = "Select output folder", FileTypeChoices = filters, SuggestedFileName = packFile.PackFilename });
         if (task == null)
             return;
         var outStream = await task.OpenWriteAsync();

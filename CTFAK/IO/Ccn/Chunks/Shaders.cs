@@ -5,7 +5,7 @@ using CTFAK.Memory;
 namespace CTFAK.IO.CCN.Chunks;
 
 [ChunkLoader(8771, "Shaders")]
-public class Shaders : DictChunk<int,Shader>
+public class Shaders : DictChunk<int, Shader>
 {
     public override void Read(ByteReader reader)
     {

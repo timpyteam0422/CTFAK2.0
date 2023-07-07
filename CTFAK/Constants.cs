@@ -1,6 +1,5 @@
 ﻿namespace CTFAK;
 
-
 public enum ChunkFlags
 {
     NotCompressed = 0, // MODE0
@@ -8,6 +7,7 @@ public enum ChunkFlags
     Encrypted = 2, // MODE2
     CompressedAndEncrypted = 3 // MODE3
 }
+
 public enum ObjectTypes
 {
     Player = -7,
@@ -30,7 +30,6 @@ public enum ObjectTypes
     Extension = 32
 }
 
-
 // Do we need this? I don't really think we need this, but I'll leave this for now in case we need it in future
 public enum Products
 {
@@ -49,7 +48,7 @@ public enum ValueType
     Double = 2
 }
 
-public enum FusionBuildType:byte
+public enum FusionBuildType : byte
 {
     WindowsExe = 0,
     WindowsScreenSaver = 1,

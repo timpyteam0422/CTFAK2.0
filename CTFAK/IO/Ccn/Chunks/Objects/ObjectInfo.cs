@@ -1,7 +1,7 @@
 ﻿using CTFAK.Attributes;
+using CTFAK.IO.Ccn.ChunkSystem;
 using CTFAK.Memory;
 using System.Drawing;
-using CTFAK.IO.Ccn.ChunkSystem;
 
 namespace CTFAK.IO.CCN.Chunks.Objects;
 
@@ -166,7 +166,7 @@ public class ObjectInfo : BankChunk
 
     public ShaderData ShaderData = new();
 
-  
+
 
     //public int shaderId;
     //public List<ByteReader> effectItems;

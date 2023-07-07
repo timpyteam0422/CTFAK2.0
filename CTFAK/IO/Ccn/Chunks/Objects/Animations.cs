@@ -4,7 +4,7 @@ namespace CTFAK.IO.CCN.Chunks.Objects;
 
 public class Animations : DataLoader
 {
-    public Dictionary<int, Animation> AnimationDict = new Dictionary<int, Animation>();
+    public Dictionary<int, Animation> AnimationDict = new();
 
     public override void Read(ByteReader reader)
     {
@@ -40,7 +40,7 @@ public class Animations : DataLoader
 
 public class Animation : DataLoader
 {
-    public Dictionary<int, AnimationDirection> DirectionDict = new Dictionary<int, AnimationDirection>();
+    public Dictionary<int, AnimationDirection> DirectionDict = new();
 
     public override void Read(ByteReader reader)
     {

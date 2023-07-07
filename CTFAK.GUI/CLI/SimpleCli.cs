@@ -5,7 +5,7 @@ namespace SimpleCLI
     public class CliWindow
     {
         public static bool horizontalLayout;
-        public List<CliControl> Controls = new List<CliControl>();
+        public List<CliControl> Controls = new();
         public CliControl SelectedControl;
 
         public bool ShouldStop;
@@ -148,7 +148,7 @@ namespace SimpleCLI
     }
     public class CliControl
     {
-        public List<CliControl> children = new List<CliControl>();
+        public List<CliControl> children = new();
         public virtual bool IsSelectable => false;
         public virtual bool HandlesSelection => false;
         public virtual void Draw(ref int x, ref int y)

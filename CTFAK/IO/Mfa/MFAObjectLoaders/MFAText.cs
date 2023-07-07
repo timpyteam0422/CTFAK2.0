@@ -9,7 +9,7 @@ public class MFAText : ObjectLoader
     public uint Flags;
     public uint Font;
     public uint Height;
-    public List<MFAParagraph> Items = new List<MFAParagraph>();
+    public List<MFAParagraph> Items = new();
     public uint Width;
 
     public override void Read(ByteReader reader)

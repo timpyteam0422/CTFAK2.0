@@ -1,10 +1,9 @@
 ﻿using CTFAK.Attributes;
+using CTFAK.IO.Ccn.ChunkSystem;
 using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.IO.Common.Events;
 using CTFAK.Memory;
-using CTFAK.Utils;
 using System.Drawing;
-using CTFAK.IO.Ccn.ChunkSystem;
 
 namespace CTFAK.IO.CCN.Chunks.Frame;
 
@@ -336,7 +335,7 @@ public class Frame : BankChunk
             case 13121:
                 _layers = (Layers)loader;
                 break;
-                
+
         }
     }
 }

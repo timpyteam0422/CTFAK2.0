@@ -92,6 +92,6 @@ public class ExtendedHeader : Chunk
         writer.WriteInt16(ScreenAngle);
         writer.WriteUInt16((ushort)ViewFlags.Flag);
         writer.WriteUInt16((ushort)NewFlags.Flag);
-        
+
     }
 }

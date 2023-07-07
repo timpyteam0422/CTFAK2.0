@@ -1,23 +1,23 @@
-﻿using System.Collections;
-using CTFAK.Memory;
+﻿using CTFAK.Memory;
+using System.Collections;
 
 namespace CTFAK.IO.Ccn.ChunkSystem;
 
-public abstract class ListChunk : Chunk,ICollection<DataLoader>
+public abstract class ListChunk : Chunk, ICollection<DataLoader>
 {
-    protected List<DataLoader> items = new List<DataLoader>();
+    protected List<DataLoader> items = new();
 
-    public IEnumerator<DataLoader> GetEnumerator()=>items.GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator()=>GetEnumerator();
-    public void Add(DataLoader item)=>items.Add(item);
-    public void Clear()=>items.Clear();
-    public bool Contains(DataLoader item)=>items.Contains(item);
-    public void CopyTo(DataLoader[] array, int arrayIndex)=>items.CopyTo(array,arrayIndex);
-    public bool Remove(DataLoader item)=>items.Remove(item);
+    public IEnumerator<DataLoader> GetEnumerator() => items.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    public void Add(DataLoader item) => items.Add(item);
+    public void Clear() => items.Clear();
+    public bool Contains(DataLoader item) => items.Contains(item);
+    public void CopyTo(DataLoader[] array, int arrayIndex) => items.CopyTo(array, arrayIndex);
+    public bool Remove(DataLoader item) => items.Remove(item);
     public int Count => items.Count;
     public bool IsReadOnly => false;
 }
-public abstract class ListChunk<T> : ListChunk,ICollection<T> where T : DataLoader, new()
+public abstract class ListChunk<T> : ListChunk, ICollection<T> where T : DataLoader, new()
 {
     public override void Read(ByteReader reader)
     {
@@ -36,11 +36,11 @@ public abstract class ListChunk<T> : ListChunk,ICollection<T> where T : DataLoad
         foreach (var item in items)
             item.Write(writer);
     }
-    public IEnumerator<T> GetEnumerator()=>items.GetEnumerator() as IEnumerator<T>;
-    IEnumerator IEnumerable.GetEnumerator()=>GetEnumerator();
-    public void Add(T item)=>items.Add(item);
-    public bool Contains(T item)=>items.Contains(item);
-    public void CopyTo(T[] array, int arrayIndex)=>items.CopyTo(array,arrayIndex);
-    public bool Remove(T item)=>items.Remove(item);
+    public IEnumerator<T> GetEnumerator() => items.GetEnumerator() as IEnumerator<T>;
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    public void Add(T item) => items.Add(item);
+    public bool Contains(T item) => items.Contains(item);
+    public void CopyTo(T[] array, int arrayIndex) => items.CopyTo(array, arrayIndex);
+    public bool Remove(T item) => items.Remove(item);
 
 }

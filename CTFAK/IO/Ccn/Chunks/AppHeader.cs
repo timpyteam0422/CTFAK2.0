@@ -1,7 +1,6 @@
 ﻿using CTFAK.Attributes;
 using CTFAK.Memory;
 using System.Drawing;
-using System.Runtime.InteropServices.JavaScript;
 
 namespace CTFAK.IO.CCN.Chunks;
 
@@ -111,8 +110,8 @@ public class AppHeader : Chunk
         dataWriter.WriteInt16((short)OtherFlags.Flag);
         dataWriter.WriteInt16(WindowWidth);
         dataWriter.WriteInt16(WindowHeight);
-        dataWriter.WriteInt32((int)(InitialScore^0xffffffff));
-        dataWriter.WriteInt32((int)(InitialLives^0xffffffff));
+        dataWriter.WriteInt32((int)(InitialScore ^ 0xffffffff));
+        dataWriter.WriteInt32((int)(InitialLives ^ 0xffffffff));
         Controls.Write(dataWriter);
         dataWriter.WriteColor(BorderColor);
         dataWriter.WriteInt32(NumberOfFrames);

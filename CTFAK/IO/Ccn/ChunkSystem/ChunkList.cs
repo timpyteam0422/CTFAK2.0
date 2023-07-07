@@ -1,9 +1,9 @@
 ﻿//#define SLIM
 
-using System.Reflection;
 using CTFAK.Attributes;
 using CTFAK.Memory;
 using CTFAK.Utils;
+using System.Reflection;
 
 namespace CTFAK.IO.Ccn.ChunkSystem;
 
@@ -22,7 +22,7 @@ public class ChunkList
     public static readonly Dictionary<int, ChunkLoaderData> KnownLoaders = new();
 #endif
 
-    public List<Chunk> Items = new List<Chunk>();
+    public List<Chunk> Items = new();
     public DataLoader Parent;
 
     public delegate void OnChunkLoadedEvent(int chunkId, Chunk loader);
@@ -175,7 +175,7 @@ return $"Unknown-{id}";
                 Logger.Log($"Loading chunk <color=lightblue>{GetChunkName(chunkId)}</color> ({chunkId})");
             }
 
-            
+
             newChunk.ReadAndLoad(reader);
 
 

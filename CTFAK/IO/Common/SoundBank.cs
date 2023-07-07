@@ -10,13 +10,13 @@ public class SoundBank : ListChunk<SoundItem>
 
 }
 
-public class SoundItem : DataLoader,IDumpable
+public class SoundItem : DataLoader, IDumpable
 {
     public int Checksum;
     public byte[] Data;
     public uint Flags;
     public uint Handle;
-    public bool IsCompressed=true;
+    public bool IsCompressed = true;
     public string Name;
     public uint References;
     public int Size;
@@ -76,7 +76,7 @@ public class SoundItem : DataLoader,IDumpable
         writer.WriteBytes(Data);
     }
 
-    public MemoryStream DumpToMemoryStream()=>new MemoryStream(Data);
+    public MemoryStream DumpToMemoryStream() => new(Data);
 
 
     public string OutputName => $"{Name}";

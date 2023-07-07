@@ -18,16 +18,15 @@ public partial class CTFAKCore
         //NativeLib.LoadLibrary(libraryFile);
     }
 
-
     static partial void InitBuiltin();
 
     public static DateTime GetBuildTime()
     {
         return new DateTime(CompileTime, DateTimeKind.Utc);
     }
+
     public static string GetVersion()
     {
-
         int a = (int)((CompileTime & 0xffffffff0000000));
         int b = (int)((CompileTime & 0x0000000ffffffff));
         return (a ^ b).ToString("X");
@@ -36,14 +35,17 @@ public partial class CTFAKCore
 
 public class LoadingOptions
 {
-    public static LoadingOptions Default => new LoadingOptions()
+    public static LoadingOptions Default => new()
     {
         LoadImages = true,
         LoadSounds = true
     };
+
     public bool LoadImages { get; set; }
+
     public bool LoadSounds { get; set; }
 }
+
 public class CTFAKContext
 {
     static CTFAKContext()
@@ -55,11 +57,14 @@ public class CTFAKContext
     {
 
     }
+
     public CTFAKContext(LoadingOptions loadOpts)
     {
         LoadingOptions = loadOpts;
     }
+
     private static CTFAKContext _defaultContext;
+
     public static CTFAKContext Current
     {
         get
@@ -83,5 +88,4 @@ public class CTFAKContext
                            BuildType == FusionBuildType.AndroidBundle;
     public FusionBuildType BuildType { get; set; }
     public int BuildNumber { get; set; }
-
 }

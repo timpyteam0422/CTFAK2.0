@@ -1,12 +1,12 @@
 ﻿using CTFAK.Attributes;
-using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.IO.Ccn.ChunkSystem;
+using CTFAK.IO.CCN.Chunks.Objects;
 using CTFAK.Memory;
 
 namespace CTFAK.IO.CCN.Chunks;
 
 [ChunkLoader(8745, "FrameItems")]
-public class FrameItems : DictChunk<int,ObjectInfo>
+public class FrameItems : DictChunk<int, ObjectInfo>
 {
     public override void Read(ByteReader reader)
     {
@@ -29,7 +29,7 @@ public class FrameItems : DictChunk<int,ObjectInfo>
 }
 
 [ChunkLoader(8767, "FrameItems2")]
-public class FrameItems2 : DictChunk<int,ObjectInfo>
+public class FrameItems2 : DictChunk<int, ObjectInfo>
 {
     public override void Read(ByteReader reader)
     {
