@@ -366,7 +366,7 @@ public class Condition : DataLoader
         //return Preprocessor.ProcessCondition(this);
         //return $"Condition {(Constants.ObjectType)ObjectType}=={Names.ConditionNames[ObjectType][Num]}{(Items.Count > 0 ? "-"+Items[0].ToString() : " ")}";
         return
-            $"Condition {(ObjectTypes)ObjectType}=={Num}{(Items.Count > 0 ? "-" + Items[0].Loader : " ")} Params: {Items.Count}. Object: ({ObjectInfo})-({ObjectType})";
+            $"Condition {(FusionObjectType)ObjectType}=={Num}{(Items.Count > 0 ? "-" + Items[0].Loader : " ")} Params: {Items.Count}. Object: ({ObjectInfo})-({ObjectType})";
     }
 }
 

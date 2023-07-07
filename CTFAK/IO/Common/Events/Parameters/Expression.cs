@@ -20,7 +20,7 @@ public class Expression : DataLoader
         writer.WriteInt16((short)Num);
         if (ObjectType == 0 && Num == 0) return;
         var newWriter = new ByteWriter(new MemoryStream());
-        if (ObjectType == (int)ObjectTypes.System &&
+        if (ObjectType == (int)FusionObjectType.System &&
             (Num == 0 || Num == 3 || Num == 23 || Num == 24 || Num == 50))
         {
             if (Loader == null) throw new NotImplementedException("Broken expression: " + Num);
@@ -46,7 +46,7 @@ public class Expression : DataLoader
         if (ObjectType == 0 && Num == 0) return;
 
         var size = reader.ReadInt16();
-        if (ObjectType == (int)ObjectTypes.System)
+        if (ObjectType == (int)FusionObjectType.System)
         {
             if (Num == 0)
             {

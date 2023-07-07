@@ -29,7 +29,7 @@ public class ObjectName : StringChunk
 public class ObjectHeader : ChildChunk<ObjectInfo>
 {
     public short Handle;
-    public ObjectTypes ObjectType;
+    public FusionObjectType ObjectType;
     public short Flags;
     public byte InkEffect;
     public Color RgbCoeff;
@@ -39,7 +39,7 @@ public class ObjectHeader : ChildChunk<ObjectInfo>
     public override void Read(ByteReader reader)
     {
         Handle = reader.ReadInt16();
-        ObjectType = (ObjectTypes)reader.ReadInt16();
+        ObjectType = (FusionObjectType)reader.ReadInt16();
         Flags = reader.ReadInt16();
         reader.Skip(2);
         InkEffect = reader.ReadByte();
@@ -79,8 +79,8 @@ public class ObjectProperties : ChildChunk<ObjectInfo>
     {
         Properties = Parent.ObjectType switch
         {
-            ObjectTypes.QuickBackdrop => new Quickbackdrop(),
-            ObjectTypes.Backdrop => new Backdrop(),
+            FusionObjectType.QuickBackdrop => new Quickbackdrop(),
+            FusionObjectType.Backdrop => new Backdrop(),
             _ => new ObjectCommon()
         };
         Properties?.Read(reader);
@@ -158,7 +158,7 @@ public class ObjectInfo : BankChunk
         set => _header.Handle = value;
     }
 
-    public ObjectTypes ObjectType
+    public FusionObjectType ObjectType
     {
         get => _header.ObjectType;
         set => _header.ObjectType = value;
