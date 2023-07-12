@@ -1,4 +1,5 @@
-﻿using CTFAK.IO.CCN;
+﻿using System.Xml;
+using CTFAK.IO.CCN;
 using CTFAK.IO.EXE;
 using CTFAK.Memory;
 using CTFAK.Utils;
@@ -8,6 +9,7 @@ namespace CTFAK.IO.Exe;
 public class ExeFile : GameFile
 {
     public PackData PackData { get; set; }
+    private byte[] PE;
     public void ReadPeHeader(ByteReader reader)
     {
         var sig = reader.ReadAscii(2);
@@ -54,11 +56,14 @@ public class ExeFile : GameFile
             reader.Seek(entry + 40);
         }
 
+        PE = reader.ReadBytes(possition);
+        
         reader.Seek(possition);
     }
     public override void Read(ByteReader reader)
     {
         ReadPeHeader(reader);
+        
         if (reader.EndOfStream)
             return;
         PackData = new PackData();
@@ -69,7 +74,9 @@ public class ExeFile : GameFile
 
     public override void Write(ByteWriter writer)
     {
-        throw new NotImplementedException();
+        writer.WriteBytes(PE);
+        PackData.Write(writer);
+        GameData.Write(writer);
     }
 
     public override string FileTypeName => "Exe";

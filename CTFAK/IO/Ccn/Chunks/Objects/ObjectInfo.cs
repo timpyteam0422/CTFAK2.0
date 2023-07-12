@@ -57,6 +57,7 @@ public class ObjectHeader : ChildChunk<ObjectInfo>
             var flag = reader.ReadByte();
             reader.Skip(2);
             InkEffectValue = reader.ReadByte();
+            reader.Skip(3);
         }
 
         if (Context.Old)
@@ -88,7 +89,7 @@ public class ObjectProperties : ChildChunk<ObjectInfo>
 
     public override void Write(ByteWriter writer)
     {
-        throw new NotImplementedException();
+        Properties.Write(writer);
     }
 }
 [ChunkLoader(17480, "ObjectEffects")]
@@ -141,10 +142,12 @@ public class ObjectEffects : ChildChunk<ObjectInfo>
 }
 public class ObjectInfo : BankChunk
 {
-    private ObjectName _name;
-    private ObjectHeader _header;
-    private ObjectProperties _properties;
-    private ObjectEffects _effects;
+    
+    // TODO Get rid of the new (); part
+    internal ObjectName _name = new ();
+    internal ObjectHeader _header = new ();
+    internal ObjectProperties _properties = new ();
+    internal ObjectEffects _effects = new ();
 
     public string Name
     {
@@ -162,6 +165,12 @@ public class ObjectInfo : BankChunk
     {
         get => _header.ObjectType;
         set => _header.ObjectType = value;
+    }
+
+    public DataLoader Properties
+    {
+        get => _properties.Properties;
+        set => _properties.Properties=value;
     }
 
     public ShaderData ShaderData = new();

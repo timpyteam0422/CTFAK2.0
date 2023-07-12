@@ -1,19 +1,30 @@
-﻿using CTFAK.Memory;
+﻿using CTFAK.IO.Ccn.ChunkSystem;
+using CTFAK.Memory;
 using CTFAK.Utils;
 
 namespace CTFAK.IO;
 
 
-public class UnknownChunk : Chunk
+public class UnknownChunk : Chunk,IDumpable
 {
+    public byte[] DataBuffer { get; private set; }
     public override void Read(ByteReader reader)
     {
-
+        DataBuffer = reader.ReadBytes();
     }
 
     public override void Write(ByteWriter writer)
     {
     }
+
+    public MemoryStream DumpToMemoryStream()
+    {
+        return new MemoryStream(DataBuffer);
+    }
+
+    public string OutputName => $"Unkown_Chunk_{Id}";
+    public string TypeName => "Binary file";
+    public string FileExtension => ".bin";
 }
 public abstract class Chunk : DataLoader
 {
@@ -58,8 +69,18 @@ public abstract class Chunk : DataLoader
     public void ReadAndLoad(ByteReader reader)
     {
         var dataReader = new ByteReader(ReadHeader(reader));
-        Read(dataReader);
+        try
+        {
+            Read(dataReader);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError($"Error while reading chunk {ChunkList.GetChunkName(Id)}. {ex}");
+            if (!Context.LoadingOptions.IgnoreChunkErrors)
+                throw;
+        }
     }
+    
 
     public void CompressAndWrite(ByteWriter writer)
     {
@@ -77,7 +98,7 @@ public abstract class Chunk : DataLoader
                 chunkData = Decryption.EncryptAndCompressMode3(chunkData, Id, Context.DecryptionTable);
                 break;
             case ChunkFlags.Compressed:
-                chunkData = Decompressor.CompressBlock(chunkData);
+                chunkData = Decompressor.Compress(chunkData).ToArray();
                 break;
             case ChunkFlags.NotCompressed:
                 // Not touching the data

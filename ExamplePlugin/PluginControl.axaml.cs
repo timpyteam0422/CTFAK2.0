@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CTFAK.GUI.PluginSystem;
 using CTFAK.IO;
+using CTFAK.IO.Exe;
 using CTFAK.IO.MFA;
 using CTFAK.Memory;
 
@@ -26,19 +27,19 @@ public partial class PluginControl : UserControl, IPlugin
 
     }
 
-    public string Name => "MFA Test";
+    public string Name => "EXE IO Test";
 
 
 
 
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
-        var mfaReader = new ByteReader("test.mfa", FileMode.Open);
-        var mfaWriter = new ByteWriter("output.mfa", FileMode.Create);
-        var mfa = new MfaFile();
-        mfa.Read(mfaReader);
-        mfa.Write(mfaWriter);
-        mfaReader.Close();
-        mfaWriter.Close();
+        var reader = new ByteReader("input.exe", FileMode.Open);
+        var writer = new ByteWriter("output.exe", FileMode.Create);
+        var mfa = new ExeFile();
+        mfa.Read(reader);
+        mfa.Write(writer);
+        reader.Close();
+        writer.Close();
     }
 }

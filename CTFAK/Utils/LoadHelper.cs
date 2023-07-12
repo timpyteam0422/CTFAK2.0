@@ -15,6 +15,9 @@ public static class LoadHelper
             case ".exe":
                 file = new ExeFile();
                 break;
+            case ".dat":
+                file = new DatFile();
+                break;
             default:
                 throw new NotImplementedException("Unknown file type: " + ext);
         }

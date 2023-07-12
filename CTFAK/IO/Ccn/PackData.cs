@@ -71,14 +71,14 @@ public class PackData : DataLoader
     }
 }
 
-public class PackFile
+public class PackFile:DataLoader
 {
     private int _bingo;
     public byte[] Data;
     public bool HasBingo;
     public string PackFilename = "ERROR";
 
-    public void Read(ByteReader exeReader)
+    public override void Read(ByteReader exeReader)
     {
         var len = exeReader.ReadUInt16();
         PackFilename = exeReader.ReadWideString(len);
@@ -86,5 +86,10 @@ public class PackFile
         Data = exeReader.ReadBytes(exeReader.ReadInt32());
         Logger.Log($"New PackFile: Name - <color=lightblue>{PackFilename}</color>; Data size - {Data.Length}");
 
+    }
+
+    public override void Write(ByteWriter writer)
+    {
+        throw new NotImplementedException();
     }
 }

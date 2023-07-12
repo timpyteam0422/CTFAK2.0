@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using EasyNetLog;
 
 namespace CTFAK.GUI;
 
@@ -27,6 +28,11 @@ public partial class MainWindow : Window
 {
     public static MainWindow Instance;
     public GameFile CurrentFile;
+
+    public EasyNetLogger Logger =
+        new EasyNetLogger(log => $"<color=gray>[<color=purple>{DateTime.Now:HH:mm:ss.fff}</color>]</color> {log}", true,
+            new[] { Path.Combine("Logs", $"{DateTime.Now:yy-MM-dd_HH_mm_ss}.log") }, Array.Empty<LogStream>());
+    
     public MainWindow()
     {
         Instance = this;
@@ -177,7 +183,7 @@ public partial class MainWindow : Window
             stopwatch.Start();
             CurrentFile = LoadHelper.LoadGameFromPath(path);
             stopwatch.Stop();
-            Logger.Log($"Initial loading finished in {stopwatch.Elapsed.TotalSeconds} seconds");
+            //Logger.Log($"Initial loading finished in {stopwatch.Elapsed.TotalSeconds} seconds");
         };
         backgroundWorker.RunWorkerCompleted += (o, e) =>
         {
@@ -229,9 +235,6 @@ public partial class MainWindow : Window
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Unpacked size: {chk.UnpackedSize.ToPrettySize()}" });
             ChunkDetails.Items.Add(new TextBlock());
         }
-
-
-
         if (loader is StringChunk strChk)
         {
             ChunkDetails.Items.Add(new TextBlock() { Text = $"Contents: {strChk.Value}", TextWrapping = TextWrapping.WrapWithOverflow });

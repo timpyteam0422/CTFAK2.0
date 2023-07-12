@@ -1,4 +1,6 @@
 ﻿using CTFAK.IO;
+using CTFAK.Utils;
+using EasyNetLog;
 
 namespace CTFAK;
 
@@ -11,12 +13,20 @@ public class CTFAKContext
 
     public CTFAKContext() : this(LoadingOptions.Default)
     {
-
     }
 
-    public CTFAKContext(LoadingOptions loadOpts)
+    public CTFAKContext(EasyNetLogger logger):this(logger,LoadingOptions.Default)
+    {
+    }
+    
+    public CTFAKContext(LoadingOptions loadOpts):this(null,loadOpts)
+    {
+    }
+    
+    public CTFAKContext(EasyNetLogger logger,LoadingOptions loadOpts)
     {
         LoadingOptions = loadOpts;
+        Logger = logger;
     }
 
     private static CTFAKContext _defaultContext;
@@ -29,6 +39,7 @@ public class CTFAKContext
         }
     }
 
+    public EasyNetLogger? Logger;
     public byte[] DecryptionTable { get; set; }
     public FusionFile CurrentFile { get; set; }
     public LoadingOptions LoadingOptions { get; set; }

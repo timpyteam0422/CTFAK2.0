@@ -16,7 +16,7 @@ public class ChunkLoaderData
     public Type LoaderType;
 }
 
-public class ChunkList
+public class ChunkList:DataLoader
 {
 #if !SLIM
     public static readonly Dictionary<int, ChunkLoaderData> KnownLoaders = new();
@@ -135,24 +135,22 @@ return $"Unknown-{id}";
                         newChunkLoaderData.ChunkId = attribute.ChunkId;
                         newChunkLoaderData.ChunkName = attribute.ChunkName;
 
-
-                        Logger.Log(
-                            $"Found chunk loader handler for chunk id <color=lightblue>{newChunkLoaderData.ChunkId}</color> with name \"<color=lightblue>{newChunkLoaderData.ChunkName}</color>\"");
+                        // TODO: Slidy pls help
+                        //Logger.Log($"Found chunk loader handler for chunk id <color=lightblue>{newChunkLoaderData.ChunkId}</color> with name \"<color=lightblue>{newChunkLoaderData.ChunkName}</color>\"");
                         if (!KnownLoaders.ContainsKey(newChunkLoaderData.ChunkId))
                             KnownLoaders.Add(newChunkLoaderData.ChunkId, newChunkLoaderData);
-                        else
-                            Logger.LogWarning("Multiple loaders are getting registered for chunk: " +
-                                              newChunkLoaderData.ChunkId);
+                        //else
+                            //Logger.LogWarning("Multiple loaders are getting registered for chunk: " + newChunkLoaderData.ChunkId);
                     }
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error white loading chunk loaders: " + ex);
+                //Logger.LogError("Error white loading chunk loaders: " + ex);
             }
 #endif
     }
 
-    public void Read(ByteReader reader)
+    public override void Read(ByteReader reader)
     {
         while (true)
         {
@@ -183,6 +181,7 @@ return $"Unknown-{id}";
 
             if (newChunk.Id == 32639) break;
             if (newChunk.Id == 8787) CTFAKContext.Current.TwoFivePlus = true;
+            if (newChunk.Id == 32494) CTFAKContext.Current.F3 = true;
 
 
             Items.Add(newChunk);
@@ -190,7 +189,7 @@ return $"Unknown-{id}";
         }
     }
 
-    public void Write(ByteWriter writer)
+    public override void Write(ByteWriter writer)
     {
         foreach (var chk in Items)
         {
