@@ -46,6 +46,7 @@ public class Group : ParameterCommon
         Name = reader.ReadWideString();
         if (Context.BuildNumber >= 293) Name = "Group " + Id;
         Unk1 = reader.ReadBytes(190 - Name.Length * 2);
+        Logger.Log("Group parameter: "+Id);
     }
 
     public override void Write(ByteWriter writer)

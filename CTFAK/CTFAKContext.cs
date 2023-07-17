@@ -26,7 +26,7 @@ public class CTFAKContext
     public CTFAKContext(EasyNetLogger logger,LoadingOptions loadOpts)
     {
         LoadingOptions = loadOpts;
-        Logger = logger;
+        //Logger = logger;
     }
 
     private static CTFAKContext _defaultContext;
@@ -39,7 +39,8 @@ public class CTFAKContext
         }
     }
 
-    public EasyNetLogger? Logger;
+    public static EasyNetLogger bullshit;
+    public EasyNetLogger? Logger=>bullshit;
     public byte[] DecryptionTable { get; set; }
     public FusionFile CurrentFile { get; set; }
     public LoadingOptions LoadingOptions { get; set; }

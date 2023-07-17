@@ -48,6 +48,7 @@ public partial class MainWindow : Window
             var packFile = (PackDataFiles.SelectedItem as Control)?.Tag as PackFile;
             PackDataFileDetails.Text = $"Name: {packFile.PackFilename}\nSize: {packFile.Data.Length.ToPrettySize()}";
         };
+        CTFAKContext.bullshit = Logger;
 
 
     }

@@ -356,8 +356,12 @@ public class Condition : DataLoader
             Items.Add(item);
         }
 
-        if (CTFAKCore.Parameters.Contains("-debug"))
-            Logger.Log(this);
+        //if (CTFAKCore.Parameters.Contains("-debug"))
+        Logger.Log(this);
+        foreach (var param in Items)
+        {
+            Logger.Log(param.Loader);
+        }
         //Console.ReadKey();
     }
 

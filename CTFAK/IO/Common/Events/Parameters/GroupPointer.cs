@@ -11,6 +11,7 @@ public class GroupPointer : ParameterCommon
     {
         Pointer = reader.ReadInt32();
         Id = reader.ReadInt16();
+        Logger.Log("GroupPointer "+Id);
     }
 
     public override void Write(ByteWriter writer)
